@@ -1,7 +1,4 @@
 import { IUser, User } from '@src/models/User';
-import { getRandomInt } from '@src/common/util/misc';
-
-import orm from './MockOrm';
 
 /******************************************************************************
                                 Functions

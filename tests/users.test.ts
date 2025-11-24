@@ -2,7 +2,7 @@ import insertUrlParams from 'inserturlparams';
 import { customDeepCompare } from 'jet-validators/utils';
 
 import UserRepo from '@src/repos/UserRepo';
-import User, { IUser } from '@src/models/User';
+import { User, IUser } from '@src/models/User';
 import { USER_NOT_FOUND_ERR } from '@src/services/UserService';
 
 import HttpStatusCodes from '@src/common/constants/HttpStatusCodes';
@@ -11,6 +11,8 @@ import { ValidationError } from '@src/common/util/route-errors';
 import Paths from './common/Paths';
 import { parseValidationErr, TRes } from './common/util';
 import { agent } from './support/setup';
+
+/* eslint-disable */
 
 /******************************************************************************
                                Constants

@@ -12,7 +12,7 @@ export enum Classe {
   Guerrier_acrobate = 'Guerrier Acrobate',
   Paladin = 'Paladin',
   Paladin_noir = 'Paladin Noir',
-  Maitre_arme = 'Maître d\'arme',
+  Maitre_arme = "Maître d'arme",
   Virtuose_martiale = 'Virtuose martiale',
   Tao = 'Tao',
   Explorateur = 'Explorateur',
@@ -34,10 +34,10 @@ export enum Race {
   Humain = 'Humain',
   Sylvain = 'Sylvain',
   Jayan = 'Jayan',
-  Danjayni = 'D\'Anjayni',
+  Danjayni = "D'Anjayni",
   Evudan = 'Evudan',
   Dainah = 'Dainah',
-  Dukzarist = 'Duk\'zarist',
+  Dukzarist = "Duk'zarist",
   Devas = 'Devas',
   Vetalas = 'Vetalas',
   Tuandalyr = 'Tuan Dalyr',
@@ -172,4 +172,4 @@ const PersonnageSchema = new Schema<IPersonnage>({
 ******************************************************************************/
 
 mongoose.pluralize(null);
-export const Personnage = model<IPersonnage>('Personnages', PersonnageSchema);
+export const Personnage = model<IPersonnage>('personnages', PersonnageSchema);

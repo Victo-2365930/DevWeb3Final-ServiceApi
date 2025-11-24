@@ -49,4 +49,4 @@ const UserSchema = new Schema<IUser>({
 ******************************************************************************/
 
 mongoose.pluralize(null);
-export const User = model<IUser>('User', UserSchema);
+export const User = model<IUser>('user', UserSchema);

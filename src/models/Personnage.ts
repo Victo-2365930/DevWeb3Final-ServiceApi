@@ -1,8 +1,12 @@
-import { Schema, model } from 'mongoose';
+import mongoose, { Schema, model, Types } from 'mongoose';
 
 /*
 Basé sur le Livre Anima:Beyond Fantasy, Core Exxet version 2
 */
+
+/******************************************************************************
+                                   Enums
+******************************************************************************/
 
 export enum Classe {
   Guerrier = 'Guerrier',
@@ -40,6 +44,10 @@ export enum Race {
   Tuandalyr = 'Tuan Dalyr',
 }
 
+/******************************************************************************
+                                     Types
+******************************************************************************/
+
 export interface IStatistiques {
   agilite: number;
   constitution: number;
@@ -52,13 +60,34 @@ export interface IStatistiques {
   apparence: number;
 }
 
+export interface IPersonnage {
+  _id?: string;
+  niveau: number;
+  nom: string;
+  joueur: Types.ObjectId;
+  vivant: boolean;
+  date_premiere_partie: Date;
+  classe: Classe;
+  race: Race;
+  statistique: IStatistiques;
+}
+
+/******************************************************************************
+                                    Schemas
+******************************************************************************/
+
 const StatistiquesSchema = new Schema<IStatistiques>({
-  force: { type: Number, required: [true, 'La statistique force est requise'] },
-  dexterite: {
+  force: {
     type: Number,
     required: [true, 'La statistique force est requise'],
     min: [1, 'La statistique force doit être supérieure à 0'],
     max: [20, 'La statistique force doit être au maximum de 20'],
+  },
+  dexterite: {
+    type: Number,
+    required: [true, 'La statistique dextérité est requise'],
+    min: [1, 'La statistique dexterité doit être supérieure à 0'],
+    max: [20, 'La statistique dexterité doit être au maximum de 20'],
   },
   agilite: {
     type: Number,
@@ -104,28 +133,23 @@ const StatistiquesSchema = new Schema<IStatistiques>({
   },
 });
 
-export interface IPersonnage {
-  id: string;
-  niveau: number;
-  nom: string;
-  nom_joueur: string;
-  vivant: boolean;
-  date_premiere_partie: Date;
-  classe: Classe;
-  race: Race;
-  statistique: IStatistiques;
-}
-
-//Validator de Statistique par Chat gpt
 const PersonnageSchema = new Schema<IPersonnage>({
-  id: { type: String, maxlength: 100 },
-  niveau: { type: Number, required: [true, 'Niveau requis'], min: 0, max: 20 },
+  niveau: {
+    type: Number,
+    required: [true, 'Le niveau est requis'],
+    min: 0,
+    max: 20,
+  },
   nom: {
     type: String,
     required: [true, 'Nom du personnage requis'],
     maxlength: 100,
   },
-  nom_joueur: { type: String, required: [true, 'Nom du joueur requis'] },
+  joueur: {
+    type: Schema.Types.ObjectId,
+    ref: 'User',
+    required: [true, 'ID du joueur requis'],
+  },
   vivant: { type: Boolean },
   date_premiere_partie: { type: Date },
   classe: { type: String, required: [true, 'La classe est requise'] },
@@ -136,4 +160,9 @@ const PersonnageSchema = new Schema<IPersonnage>({
   },
 });
 
-export const Personnage = model<IPersonnage>('Personnage', PersonnageSchema);
+/******************************************************************************
+                                Export model
+******************************************************************************/
+
+mongoose.pluralize(null);
+export const Personnage = model<IPersonnage>('Personnages', PersonnageSchema);

@@ -1,6 +1,5 @@
 import { RouteError } from '@src/common/util/route-errors';
 import HttpStatusCodes from '@src/common/constants/HttpStatusCodes';
-
 import PersonnageRepo from '@src/repos/PersonnageRepo';
 import { IPersonnage } from '@src/models/Personnage';
 
@@ -31,8 +30,8 @@ function getAllByLevel(niveau: number): Promise<IPersonnage[]> {
 /**
  * Extraire tous les personnages par leur nom de joueur
  */
-function getAllByJoueur(nom_joueur: string): Promise<IPersonnage[]> {
-  return PersonnageRepo.getAllByJoueur(nom_joueur);
+function getAllByJoueur(id_joueur: string): Promise<IPersonnage[]> {
+  return PersonnageRepo.getAllByJoueur(id_joueur);
 }
 
 /**

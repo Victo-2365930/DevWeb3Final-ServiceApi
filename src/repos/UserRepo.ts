@@ -3,7 +3,6 @@ import { getRandomInt } from '@src/common/util/misc';
 
 import orm from './MockOrm';
 
-
 /******************************************************************************
                                 Functions
 ******************************************************************************/
@@ -24,10 +23,10 @@ async function getOne(email: string): Promise<IUser | null> {
 /**
  * See if a user with the given id exists.
  */
-async function persists(id: number): Promise<boolean> {
+async function persists(id: string): Promise<boolean> {
   const db = await orm.openDb();
   for (const user of db.users) {
-    if (user.id === id) {
+    if (user._id === id) {
       return true;
     }
   }
@@ -73,7 +72,7 @@ async function update(user: IUser): Promise<void> {
 /**
  * Delete one user.
  */
-async function delete_(id: number): Promise<void> {
+async function delete_(id: string): Promise<void> {
   const db = await orm.openDb();
   for (let i = 0; i < db.users.length; i++) {
     if (db.users[i].id === id) {
@@ -82,7 +81,6 @@ async function delete_(id: number): Promise<void> {
     }
   }
 }
-
 
 // **** Unit-Tests Only **** //
 
@@ -96,23 +94,20 @@ async function deleteAllUsers(): Promise<void> {
 }
 
 /**
- * Insert multiple users. Can't do multiple at once cause using a plain file 
+ * Insert multiple users. Can't do multiple at once cause using a plain file
  * for nmow.
  */
-async function insertMult(
-  users: IUser[] | readonly IUser[],
-): Promise<IUser[]> {
+async function insertMult(users: IUser[] | readonly IUser[]): Promise<IUser[]> {
   const db = await orm.openDb(),
-    usersF = [ ...users ];
+    usersF = [...users];
   for (const user of usersF) {
     user.id = getRandomInt();
     user.created = new Date();
   }
-  db.users = [ ...db.users, ...users ];
+  db.users = [...db.users, ...users];
   await orm.saveDb(db);
   return usersF;
 }
-
 
 /******************************************************************************
                                 Export default

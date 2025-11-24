@@ -26,12 +26,12 @@ async function getAllByLevel(req: IReq, res: IRes) {
 }
 
 /**
- * Extraire tous les personnages selon le nom de leur joueur
+ * Extraire tous les personnages d'un joueur à partir de son ID
  */
 async function getAllByJoueur(req: IReq, res: IRes) {
-  const { nom_joueur } = req.params;
+  const { id_joueur } = req.params;
   const personnages = await PersonnageService.getAllByJoueur(
-    nom_joueur as string,
+    id_joueur as string,
   );
   res.status(HttpStatusCodes.OK).json({ personnages });
 }

@@ -1,31 +1,14 @@
-import { isNumber } from 'jet-validators';
-import { transform } from 'jet-validators/utils';
-
 import HttpStatusCodes from '@src/common/constants/HttpStatusCodes';
-import UserService from '@src/services/UserService';
-import User from '@src/models/User';
-
+import { IUser } from '@src/models/User';
 import { IReq, IRes } from './common/types';
-import { parseReq } from './common/util';
-
-
-/******************************************************************************
-                                Constants
-******************************************************************************/
-
-const Validators = {
-  add: parseReq({ user: User.test }),
-  update: parseReq({ user: User.test }),
-  delete: parseReq({ id: transform(Number, isNumber) }),
-} as const;
-
+import UserService from '@src/services/UserService';
 
 /******************************************************************************
-                                Functions
-******************************************************************************/
+ *                                 Functions
+ ******************************************************************************/
 
 /**
- * Get all users.
+ * Extraire tous les utilisateurs.
  */
 async function getAll(_: IReq, res: IRes) {
   const users = await UserService.getAll();
@@ -33,36 +16,35 @@ async function getAll(_: IReq, res: IRes) {
 }
 
 /**
- * Add one user.
+ * Ajouter un utilisateur.
  */
 async function add(req: IReq, res: IRes) {
-  const { user } = Validators.add(req.body);
-  await UserService.addOne(user);
+  const { user } = req.body;
+  await UserService.addOne(user as IUser);
   res.status(HttpStatusCodes.CREATED).end();
 }
 
 /**
- * Update one user.
+ * Mettre à jour un utilisateur.
  */
 async function update(req: IReq, res: IRes) {
-  const { user } = Validators.update(req.body);
-  await UserService.updateOne(user);
+  const { user } = req.body;
+  await UserService.updateOne(user as IUser);
   res.status(HttpStatusCodes.OK).end();
 }
 
 /**
- * Delete one user.
+ * Supprimer un utilisateur.
  */
 async function delete_(req: IReq, res: IRes) {
-  const { id } = Validators.delete(req.params);
-  await UserService.delete(id);
+  const { id } = req.params;
+  await UserService.delete(id as string);
   res.status(HttpStatusCodes.OK).end();
 }
 
-
 /******************************************************************************
-                                Export default
-******************************************************************************/
+ *                                 Export default
+ ******************************************************************************/
 
 export default {
   getAll,

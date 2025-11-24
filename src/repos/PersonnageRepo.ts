@@ -1,7 +1,7 @@
 import ENV from '@src/common/constants/ENV';
 import { IPersonnage, Personnage } from '@src/models/Personnage';
 
-import mongoose from 'mongoose';
+import mongoose, { ObjectId } from 'mongoose';
 
 /******************************************************************************
                                 Functions
@@ -15,7 +15,7 @@ import mongoose from 'mongoose';
  * @returns {IPersonnage} - Un personnage si trouvé
  */
 
-async function getOne(id: string): Promise<IPersonnage | null> {
+async function getOne(id: ObjectId): Promise<IPersonnage | null> {
   const personnage = await Personnage.findOne({ id: id });
   return personnage;
 }

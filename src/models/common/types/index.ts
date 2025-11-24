@@ -1,5 +1,6 @@
+import { Types } from 'mongoose';
 
 export interface IModel {
-  id: number;
+  _id: Types.ObjectId;
   created: Date;
 }

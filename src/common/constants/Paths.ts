@@ -11,9 +11,8 @@ export default {
   },
   Users: {
     Base: '/users',
-    Get: '/all',
+    GetById: 'getbyid/:id',
     Add: '/add',
-    Update: '/update',
     Delete: '/delete/:id',
   },
 } as const;

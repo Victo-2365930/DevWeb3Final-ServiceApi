@@ -45,7 +45,11 @@ function addOne(personnage: IPersonnage): Promise<void> {
  * Mets à jour un personnage.
  */
 async function updateOne(personnage: IPersonnage): Promise<void> {
-  const persists = await PersonnageRepo.getOne(personnage.id);
+  if (personnage._id == undefined) {
+    return;
+  }
+
+  const persists = await PersonnageRepo.getOne(personnage._id);
   if (!persists) {
     throw new RouteError(HttpStatusCodes.NOT_FOUND, PERSONNAGE_NON_TROUVE);
   }
@@ -61,7 +65,7 @@ async function _delete(id: string): Promise<void> {
   if (!persists) {
     throw new RouteError(HttpStatusCodes.NOT_FOUND, PERSONNAGE_NON_TROUVE);
   }
-  // Delete personnage
+
   return PersonnageRepo.delete(id);
 }
 

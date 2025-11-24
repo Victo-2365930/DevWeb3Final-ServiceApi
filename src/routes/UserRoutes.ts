@@ -3,16 +3,18 @@ import { IUser } from '@src/models/User';
 import { IReq, IRes } from './common/types';
 import UserService from '@src/services/UserService';
 
-/******************************************************************************
- *                                 Functions
- ******************************************************************************/
+/**
+ * Functions
+ */
 
 /**
- * Extraire tous les utilisateurs.
+ *
+ *  Extraire un User par son ID
  */
-async function getAll(_: IReq, res: IRes) {
-  const users = await UserService.getAll();
-  res.status(HttpStatusCodes.OK).json({ users });
+async function getOne(req: IReq, res: IRes) {
+  const { id } = req.params;
+  const user = await UserService.getById(id as string);
+  res.status(HttpStatusCodes.OK).json({ user });
 }
 
 /**
@@ -25,13 +27,14 @@ async function add(req: IReq, res: IRes) {
 }
 
 /**
- * Mettre à jour un utilisateur.
- */
+ * Mettre à jour un utilisateur. - Ne sera pas implémenté
+ *
 async function update(req: IReq, res: IRes) {
   const { user } = req.body;
   await UserService.updateOne(user as IUser);
   res.status(HttpStatusCodes.OK).end();
 }
+  */
 
 /**
  * Supprimer un utilisateur.
@@ -42,13 +45,12 @@ async function delete_(req: IReq, res: IRes) {
   res.status(HttpStatusCodes.OK).end();
 }
 
-/******************************************************************************
- *                                 Export default
- ******************************************************************************/
-
+/**
+ * Export default
+ */
 export default {
-  getAll,
+  getOne,
   add,
-  update,
+  //update,
   delete: delete_,
 } as const;

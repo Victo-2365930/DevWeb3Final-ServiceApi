@@ -16,7 +16,6 @@ export interface IUser {
                                     Schemas
 ******************************************************************************/
 
-//Regex de email par Gemini
 const UserSchema = new Schema<IUser>({
   nom: {
     type: String,
@@ -28,7 +27,7 @@ const UserSchema = new Schema<IUser>({
     unique: true,
     lowercase: true,
     match: [
-      /^\w+([\.-]?\w+)*@\w+([\.-]?\w+)*(\.\w{2,3})+$/,
+      /^\w+([.-]?\w+)*@\w+([.-]?\w+)*(\.\w{2,3})+$/, //original: /^\w+([\.-]?\w+)*@\w+([\.-]?\w+)*(\.\w{2,3})+$/
       'Le courriel doit être valide (x@y.zz) .',
     ],
     required: [true, 'Le courriel est requis'],

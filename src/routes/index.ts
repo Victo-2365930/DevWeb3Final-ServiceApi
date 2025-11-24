@@ -5,6 +5,8 @@ import PersonnageRoutes from './PersonnageRoutes';
 import HttpStatusCodes from '@src/common/constants/HttpStatusCodes';
 import { Personnage } from '@src/models/Personnage';
 
+/* eslint-disable */
+
 /******************************************************************************
                                 Setup
 ******************************************************************************/
@@ -42,17 +44,26 @@ function validatePersonnage(req: Request, res: Response, next: NextFunction) {
 // Init router
 const personnageRouter = Router();
 
-// Get all users
-personnageRouter.get(Paths.Users.Get, PersonnageRoutes.getAll);
-personnageRouter.get(Paths.Users.GetAllByLevel, PersonnageRoutes.getAll);
-personnageRouter.get(Paths.Users.GetAllByJoueur, PersonnageRoutes.getAll);
+personnageRouter.get(Paths.Personnage.GetAll, PersonnageRoutes.getAll);
+personnageRouter.get(
+  Paths.Personnage.GetAllByLevel,
+  PersonnageRoutes.getAllByLevel,
+);
+personnageRouter.get(
+  Paths.Personnage.GetAllByJoueur,
+  PersonnageRoutes.getAllByJoueur,
+);
 personnageRouter.post(
-  Paths.Users.Add,
+  Paths.Personnage.Add,
   validatePersonnage,
   PersonnageRoutes.add,
 );
-personnageRouter.put(Paths.Users.Update, PersonnageRoutes.update);
-personnageRouter.delete(Paths.Users.Delete, PersonnageRoutes.delete);
+personnageRouter.put(
+  Paths.Personnage.Update,
+  validatePersonnage,
+  PersonnageRoutes.update,
+);
+personnageRouter.delete(Paths.Personnage.Delete, PersonnageRoutes.delete);
 
 // Add personnageRouter
 apiRouter.use(Paths.Users.Base, personnageRouter);

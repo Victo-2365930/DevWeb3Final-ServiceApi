@@ -1,5 +1,4 @@
 import mongoose, { Schema, model, Types } from 'mongoose';
-
 /*
 Basé sur le Livre Anima:Beyond Fantasy, Core Exxet version 2
 */
@@ -13,7 +12,7 @@ export enum Classe {
   Guerrier_acrobate = 'Guerrier Acrobate',
   Paladin = 'Paladin',
   Paladin_noir = 'Paladin Noir',
-  Maitre_arme = "Maître d'arme",
+  Maitre_arme = 'Maître d\'arme',
   Virtuose_martiale = 'Virtuose martiale',
   Tao = 'Tao',
   Explorateur = 'Explorateur',
@@ -35,10 +34,10 @@ export enum Race {
   Humain = 'Humain',
   Sylvain = 'Sylvain',
   Jayan = 'Jayan',
-  Danjayni = "D'Anjayni",
+  Danjayni = 'D\'Anjayni',
   Evudan = 'Evudan',
   Dainah = 'Dainah',
-  Dukzarist = "Duk'zarist",
+  Dukzarist = 'Duk\'zarist',
   Devas = 'Devas',
   Vetalas = 'Vetalas',
   Tuandalyr = 'Tuan Dalyr',
@@ -152,8 +151,16 @@ const PersonnageSchema = new Schema<IPersonnage>({
   },
   vivant: { type: Boolean },
   date_premiere_partie: { type: Date },
-  classe: { type: String, required: [true, 'La classe est requise'] },
-  race: { type: String, required: [true, 'La race est requise'] },
+  classe: {
+    type: String,
+    enum: Classe,
+    required: [true, 'La classe est requise'],
+  },
+  race: {
+    type: String,
+    enum: Race,
+    required: [true, 'La race est requise'],
+  },
   statistique: {
     type: StatistiquesSchema,
     required: [true, 'Les statistiques sont requis'],

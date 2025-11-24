@@ -1,7 +1,6 @@
 import HttpStatusCodes from '@src/common/constants/HttpStatusCodes';
 import PersonnageService from '@src/services/PersonnageService';
 import { IPersonnage } from '@src/models/Personnage';
-
 import { IReq, IRes } from './common/types';
 
 /******************************************************************************

@@ -1,8 +1,8 @@
 export default {
-  Base: '/edu',
+  Base: '/api',
   Personnage: {
     Base: '/personnages',
-    GetAll: 'all',
+    GetAll: '/all',
     GetAllByLevel: '/allParNiveau/:niveau',
     GetAllByJoueur: '/allParJoueur/:nomJoueur',
     Add: '/add',

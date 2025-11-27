@@ -68,24 +68,36 @@ function validateUser(req: Request, res: Response, next: NextFunction) {
 }
 
 // Init router
-const leRouter = Router();
+const leRouterPersonnage = Router();
+const leRouterUser = Router();
 
-leRouter.get(Paths.Users.GetById, UserRoutes.getOne);
-leRouter.get(Paths.Personnage.GetAll, PersonnageRoutes.getAll);
-leRouter.get(Paths.Personnage.GetAllByLevel, PersonnageRoutes.getAllByLevel);
-leRouter.get(Paths.Personnage.GetAllByJoueur, PersonnageRoutes.getAllByJoueur);
-leRouter.post(Paths.Users.Add, UserRoutes.add);
-leRouter.post(Paths.Personnage.Add, validatePersonnage, PersonnageRoutes.add);
-leRouter.put(
+leRouterUser.get(Paths.Users.GetById, UserRoutes.getOne);
+leRouterPersonnage.get(Paths.Personnage.GetAll, PersonnageRoutes.getAll);
+leRouterPersonnage.get(
+  Paths.Personnage.GetAllByLevel,
+  PersonnageRoutes.getAllByLevel,
+);
+leRouterPersonnage.get(
+  Paths.Personnage.GetAllByJoueur,
+  PersonnageRoutes.getAllByJoueur,
+);
+leRouterUser.post(Paths.Users.Add, UserRoutes.add);
+leRouterPersonnage.post(
+  Paths.Personnage.Add,
+  validatePersonnage,
+  PersonnageRoutes.add,
+);
+leRouterPersonnage.put(
   Paths.Personnage.Update,
   validatePersonnage,
   PersonnageRoutes.update,
 );
-leRouter.delete(Paths.Users.Delete, validateUser, UserRoutes.delete);
-leRouter.delete(Paths.Personnage.Delete, PersonnageRoutes.delete);
+leRouterUser.delete(Paths.Users.Delete, validateUser, UserRoutes.delete);
+leRouterPersonnage.delete(Paths.Personnage.Delete, PersonnageRoutes.delete);
 
 // Add leRouter
-apiRouter.use(Paths.Users.Base, leRouter);
+apiRouter.use(Paths.Users.Base, leRouterUser);
+apiRouter.use(Paths.Personnage.Base, leRouterPersonnage);
 
 /******************************************************************************
                                 Export default

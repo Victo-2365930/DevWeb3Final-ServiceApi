@@ -1,7 +1,7 @@
 import { RouteError } from '@src/common/util/route-errors';
 import HttpStatusCodes from '@src/common/constants/HttpStatusCodes';
 import PersonnageRepo from '@src/repos/PersonnageRepo';
-import { IPersonnage } from '@src/models/Personnage';
+import { IPersonnage, Personnage } from '@src/models/Personnage';
 
 /******************************************************************************
                                 Constants
@@ -12,6 +12,17 @@ export const PERSONNAGE_NON_TROUVE = 'Personnage non trouvé';
 /******************************************************************************
                                 Functions
 ******************************************************************************/
+
+/**
+ * Trouver un user par son ID
+ */
+async function getById(id: string): Promise<IPersonnage> {
+  const personnage = await Personnage.findById(id).exec();
+  if (!personnage) {
+    throw new RouteError(HttpStatusCodes.NOT_FOUND, PERSONNAGE_NON_TROUVE);
+  }
+  return personnage;
+}
 
 /**
  * Extraire tous les personnages.
@@ -74,6 +85,7 @@ async function _delete(id: string): Promise<void> {
 ******************************************************************************/
 
 export default {
+  getById,
   getAll,
   getAllByLevel,
   getAllByJoueur,

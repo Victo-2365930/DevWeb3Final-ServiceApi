@@ -72,6 +72,7 @@ const leRouterPersonnage = Router();
 const leRouterUser = Router();
 
 leRouterUser.get(Paths.Users.GetById, UserRoutes.getOne);
+leRouterPersonnage.get(Paths.Personnage.GetById, PersonnageRoutes.getOne);
 leRouterPersonnage.get(Paths.Personnage.GetAll, PersonnageRoutes.getAll);
 leRouterPersonnage.get(
   Paths.Personnage.GetAllByLevel,

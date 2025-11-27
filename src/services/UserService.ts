@@ -7,7 +7,7 @@ import UserRepo from '@src/repos/UserRepo';
                                 Constants
 ******************************************************************************/
 
-export const USER_NOT_FOUND_ERR = 'Utilisateur non trouvé';
+export const USER_NON_TROUVE = 'Utilisateur non trouvé';
 
 /******************************************************************************
                                 Functions
@@ -19,7 +19,7 @@ export const USER_NOT_FOUND_ERR = 'Utilisateur non trouvé';
 async function getById(id: string): Promise<IUser> {
   const user = await User.findById(id).exec();
   if (!user) {
-    throw new RouteError(HttpStatusCodes.NOT_FOUND, USER_NOT_FOUND_ERR);
+    throw new RouteError(HttpStatusCodes.NOT_FOUND, USER_NON_TROUVE);
   }
   return user;
 }
@@ -53,7 +53,7 @@ async function updateOne(user: IUser): Promise<void> {
 async function _delete(id: string): Promise<void> {
   const persists = await UserRepo.getOne(id);
   if (!persists) {
-    throw new RouteError(HttpStatusCodes.NOT_FOUND, USER_NOT_FOUND_ERR);
+    throw new RouteError(HttpStatusCodes.NOT_FOUND, USER_NON_TROUVE);
   }
 
   return UserRepo.delete(id);

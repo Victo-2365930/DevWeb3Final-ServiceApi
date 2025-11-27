@@ -8,6 +8,16 @@ import { IReq, IRes } from './common/types';
 ******************************************************************************/
 
 /**
+ *
+ *  Extraire un Personnage par son ID
+ */
+async function getOne(req: IReq, res: IRes) {
+  const { id } = req.params;
+  const user = await PersonnageService.getById(id as string);
+  res.status(HttpStatusCodes.OK).json({ user });
+}
+
+/**
  * Extraire tous les personnages
  */
 async function getAll(_: IReq, res: IRes) {
@@ -67,6 +77,7 @@ async function delete_(req: IReq, res: IRes) {
 ******************************************************************************/
 
 export default {
+  getOne,
   getAll,
   getAllByLevel,
   getAllByJoueur,

@@ -3,7 +3,7 @@ import { customDeepCompare } from 'jet-validators/utils';
 
 import UserRepo from '@src/repos/UserRepo';
 import { User, IUser } from '@src/models/User';
-import { USER_NOT_FOUND_ERR } from '@src/services/UserService';
+import { USER_NON_TROUVE } from '@src/services/UserService';
 
 import HttpStatusCodes from '@src/common/constants/HttpStatusCodes';
 import { ValidationError } from '@src/common/util/route-errors';
@@ -124,13 +124,13 @@ describe('UserRouter', () => {
     // User not found
     it(
       'should return a JSON object with the error message of ' +
-        `"${USER_NOT_FOUND_ERR}" and a status code of ` +
+        `"${USER_NON_TROUVE}" and a status code of ` +
         `"${HttpStatusCodes.NOT_FOUND}" if the id was not found.`,
       async () => {
         const user = User.new({ id: 4, name: 'a', email: 'a@a.com' }),
           res: TRes = await agent.put(Paths.Users.Update).send({ user });
         expect(res.status).toBe(HttpStatusCodes.NOT_FOUND);
-        expect(res.body.error).toBe(USER_NOT_FOUND_ERR);
+        expect(res.body.error).toBe(USER_NON_TROUVE);
       },
     );
   });
@@ -153,12 +153,12 @@ describe('UserRouter', () => {
     // User not found
     it(
       'should return a JSON object with the error message of ' +
-        `"${USER_NOT_FOUND_ERR}" and a status code of ` +
+        `"${USER_NON_TROUVE}" and a status code of ` +
         `"${HttpStatusCodes.NOT_FOUND}" if the id was not found.`,
       async () => {
         const res: TRes = await agent.delete(getPath(-1));
         expect(res.status).toBe(HttpStatusCodes.NOT_FOUND);
-        expect(res.body.error).toBe(USER_NOT_FOUND_ERR);
+        expect(res.body.error).toBe(USER_NON_TROUVE);
       },
     );
   });

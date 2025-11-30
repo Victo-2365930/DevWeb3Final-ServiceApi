@@ -14,35 +14,44 @@ export const PERSONNAGE_NON_TROUVE = 'Personnage non trouvé';
 ******************************************************************************/
 
 /**
- * Trouver un user par son ID
+ * Pour extraire un personnage à partir de son id
+ * @param id du personnage à extraire
+ * @returns Retour un personnage ou null si non trouvé
  */
 async function getById(id: string): Promise<IPersonnage | null> {
   return PersonnageRepo.getOne(id);
 }
 
 /**
- * Extraire tous les personnages.
+ * Pour extraire tous les personnages
+ * @returns une lste de tous les personnages, peut être vide
  */
 function getAll(): Promise<IPersonnage[]> {
   return PersonnageRepo.getAll();
 }
 
 /**
- * Extraire tous les personnages par leur nom de joueur
+ * Extraire tous les personnages du joueur à partir de son id
+ * @param id_joueur id du joueur
+ * @returns Une liste de personnages appartenant au joueur, peut être vide
  */
 function getAllByJoueur(id_joueur: string): Promise<IPersonnage[]> {
   return PersonnageRepo.getAllByJoueur(id_joueur);
 }
 
 /**
- * Ajouter un Personnage.
+ * Pour ajouter un personnage
+ * @param personnage Personnage à ajouter
+ * @returns VOID
  */
 function addOne(personnage: IPersonnage): Promise<void> {
   return PersonnageRepo.add(personnage);
 }
 
 /**
- * Mets à jour un personnage.
+ * Pour modifier un personnage
+ * @param personnage Personnage à modifier
+ * @returns VOID
  */
 async function updateOne(personnage: IPersonnage): Promise<void> {
   if (personnage._id == undefined) {
@@ -58,7 +67,9 @@ async function updateOne(personnage: IPersonnage): Promise<void> {
 }
 
 /**
- * Supprimer un personnage par son id
+ * Pour supprimer un personnage à partir de son id
+ * @param id id du personnage à supprimer
+ * @returns VOID
  */
 async function _delete(id: string): Promise<void> {
   const persists = await PersonnageRepo.getOne(id);

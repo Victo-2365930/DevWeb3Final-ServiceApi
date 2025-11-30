@@ -4,7 +4,7 @@ export default {
     Base: '/personnages',
     GetById: '/:id',
     GetAll: '/all',
-    GetAllByJoueur: '/allParJoueur/:nomJoueur',
+    GetAllByJoueur: '/allParJoueur/:idJoueur',
     Add: '/add',
     Update: '/update',
     Delete: '/delete/:id',

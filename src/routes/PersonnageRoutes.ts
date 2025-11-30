@@ -8,8 +8,9 @@ import { IReq, IRes } from './common/types';
 ******************************************************************************/
 
 /**
- *
- *  Extraire un Personnage par son ID
+ * Pour extraire un personnage par son ID
+ * @param req
+ * @param res
  */
 async function getOne(req: IReq, res: IRes) {
   const { id } = req.params;
@@ -18,7 +19,9 @@ async function getOne(req: IReq, res: IRes) {
 }
 
 /**
- * Extraire tous les personnages
+ * Pour extraire tous les personnages
+ * @param _
+ * @param res
  */
 async function getAll(_: IReq, res: IRes) {
   const personnages = await PersonnageService.getAll();
@@ -26,18 +29,22 @@ async function getAll(_: IReq, res: IRes) {
 }
 
 /**
- * Extraire tous les personnages d'un joueur à partir de son ID
+ * Pour extraire tous les personnages d'un joueur
+ * @param req
+ * @param res
  */
 async function getAllByJoueur(req: IReq, res: IRes) {
-  const { id_joueur } = req.params;
+  const { idJoueur } = req.params;
   const personnages = await PersonnageService.getAllByJoueur(
-    id_joueur as string,
+    idJoueur as string,
   );
   res.status(HttpStatusCodes.OK).json({ personnages });
 }
 
 /**
- * Ajouter un personnage
+ * Pour ajouter un personnage
+ * @param req
+ * @param res
  */
 async function add(req: IReq, res: IRes) {
   const { personnage } = req.body;
@@ -46,7 +53,9 @@ async function add(req: IReq, res: IRes) {
 }
 
 /**
- * Mettre à jour un personnage
+ * Pour mettre à jour un personnage
+ * @param req
+ * @param res
  */
 async function update(req: IReq, res: IRes) {
   const { personnage } = req.body;
@@ -55,7 +64,9 @@ async function update(req: IReq, res: IRes) {
 }
 
 /**
- * Supprimer un personnage
+ * Pour supprimer un personnage
+ * @param req
+ * @param res
  */
 async function delete_(req: IReq, res: IRes) {
   const { id } = req.params;

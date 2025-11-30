@@ -1,15 +1,15 @@
 import { IPersonnage, Personnage } from '@src/models/Personnage';
+import { Types } from 'mongoose';
 
 /******************************************************************************
                                 Functions
 ******************************************************************************/
 
 /**
- * Extraire un Personnage par son ID
+ * Extraire un seul Personnage par son id
  *
- * @param {string} id - ID du personnage à extraire
- *
- * @returns {IPersonnage} - Un personnage si trouvé
+ * @param id
+ * @returns un personnage à partir du id ou un personnage null
  */
 
 async function getOne(id: string): Promise<IPersonnage | null> {
@@ -18,9 +18,8 @@ async function getOne(id: string): Promise<IPersonnage | null> {
 }
 
 /**
- * Extraire tous les Personnages.
- *
- * @returns {IPersonnage[]} Un tableau de tous les personnages
+ * Pour extraire tous les personnages de la BD
+ * @returns Un tableau de tous les personnages
  */
 async function getAll(): Promise<IPersonnage[]> {
   const Personnages = await Personnage.find();
@@ -28,21 +27,24 @@ async function getAll(): Promise<IPersonnage[]> {
 }
 
 /**
- * Extraire tous les personnages du joueur
- *
- * @param {string} nom_joueur - nom du joueur
- *
- * @returns {IPersonnage[]} Un tableau de tous les personnages du joueur
+ * Pour extraire la liste de personnages appartenant à un joueur
+ * @param id_joueur id du joueur
+ * @returns La liste du personnages du joueur, peut être vide
  */
-async function getAllByJoueur(nom_joueur: string): Promise<IPersonnage[]> {
-  const personnages = await Personnage.find({ nom_joueur: nom_joueur });
+async function getAllByJoueur(id_joueur: string): Promise<IPersonnage[]> {
+  if (!Types.ObjectId.isValid(id_joueur)) {
+    return [];
+  }
+  const personnages = await Personnage.find({
+    joueur: new Types.ObjectId(id_joueur),
+  });
+
   return personnages;
 }
 
 /**
- * Ajouter un Personnage.
- *
- * @param {IPersonnage} personnage - Personnage à ajouter
+ *  Pour ajouter un personnage
+ * @param personnage Personnage à ajouter
  */
 
 async function add(personnage: IPersonnage): Promise<void> {
@@ -51,9 +53,8 @@ async function add(personnage: IPersonnage): Promise<void> {
 }
 
 /**
- * Mettre à jour un Personnage.
- *
- * @param {IPersonnage} personnage - Personnage à modifier
+ * Pour mettre à jour un Personnage
+ * @param personnage Personnage à mettre à jour
  */
 async function update(personnage: IPersonnage): Promise<void> {
   const PersonnageAModifier = await Personnage.findById(personnage._id);

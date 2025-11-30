@@ -71,14 +71,13 @@ function validateUser(req: Request, res: Response, next: NextFunction) {
 const leRouterPersonnage = Router();
 const leRouterUser = Router();
 
-leRouterUser.get(Paths.Users.GetById, UserRoutes.getOne);
-leRouterPersonnage.get(Paths.Personnage.GetById, PersonnageRoutes.getOne);
+// Personnage Routes
 leRouterPersonnage.get(Paths.Personnage.GetAll, PersonnageRoutes.getAll);
 leRouterPersonnage.get(
   Paths.Personnage.GetAllByJoueur,
   PersonnageRoutes.getAllByJoueur,
 );
-leRouterUser.post(Paths.Users.Add, UserRoutes.add);
+leRouterPersonnage.get(Paths.Personnage.GetById, PersonnageRoutes.getOne); // /:id doit être en dernier
 leRouterPersonnage.post(
   Paths.Personnage.Add,
   validatePersonnage,
@@ -89,8 +88,12 @@ leRouterPersonnage.put(
   validatePersonnage,
   PersonnageRoutes.update,
 );
-leRouterUser.delete(Paths.Users.Delete, UserRoutes.delete);
 leRouterPersonnage.delete(Paths.Personnage.Delete, PersonnageRoutes.delete);
+
+// User Routes
+leRouterUser.get(Paths.Users.GetById, UserRoutes.getOne);
+leRouterUser.post(Paths.Users.Add, UserRoutes.add);
+leRouterUser.delete(Paths.Users.Delete, UserRoutes.delete);
 
 // Add leRouter
 apiRouter.use(Paths.Users.Base, leRouterUser);

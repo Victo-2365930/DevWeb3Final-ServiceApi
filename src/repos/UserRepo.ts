@@ -8,7 +8,7 @@ import { IUser, User } from '@src/models/User';
  * Get one user.
  */
 async function getOne(id: string): Promise<IUser | null> {
-  const user = await User.findOne({ id: id });
+  const user = await User.findOne({ _id: id });
   return user;
 }
 
@@ -31,7 +31,7 @@ async function update(user: IUser): Promise<void> {
  * Delete one user.
  */
 async function delete_(id: string): Promise<void> {
-  await User.deleteOne({ id: id });
+  await User.deleteOne({ _id: id });
 }
 
 /**

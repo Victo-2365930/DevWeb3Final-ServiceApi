@@ -16,12 +16,8 @@ export const USER_NON_TROUVE = 'Utilisateur non trouvé';
 /**
  * Trouver un user par son ID
  */
-async function getById(id: string): Promise<IUser> {
-  const user = await User.findById(id).exec();
-  if (!user) {
-    throw new RouteError(HttpStatusCodes.NOT_FOUND, USER_NON_TROUVE);
-  }
-  return user;
+async function getById(id: string): Promise<IUser | null> {
+  return UserRepo.getOne(id);
 }
 
 /**

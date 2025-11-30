@@ -12,7 +12,7 @@ export default {
   },
   Users: {
     Base: '/users',
-    GetById: 'getbyid/:id',
+    GetById: '/:id',
     Add: '/add',
     Delete: '/delete/:id',
   },

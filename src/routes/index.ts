@@ -93,7 +93,7 @@ leRouterPersonnage.put(
   validatePersonnage,
   PersonnageRoutes.update,
 );
-leRouterUser.delete(Paths.Users.Delete, validateUser, UserRoutes.delete);
+leRouterUser.delete(Paths.Users.Delete, UserRoutes.delete);
 leRouterPersonnage.delete(Paths.Personnage.Delete, PersonnageRoutes.delete);
 
 // Add leRouter

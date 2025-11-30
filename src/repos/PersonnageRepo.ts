@@ -32,11 +32,8 @@ async function getAll(): Promise<IPersonnage[]> {
  * @returns La liste du personnages du joueur, peut être vide
  */
 async function getAllByJoueur(id_joueur: string): Promise<IPersonnage[]> {
-  if (!Types.ObjectId.isValid(id_joueur)) {
-    return [];
-  }
   const personnages = await Personnage.find({
-    joueur: new Types.ObjectId(id_joueur),
+    joueur: id_joueur,
   });
 
   return personnages;
@@ -91,7 +88,7 @@ async function update(personnage: IPersonnage): Promise<void> {
  * @param {string} id -  id de l'Personnage à supprimer
  */
 async function delete_(id: string): Promise<void> {
-  await Personnage.deleteOne({ id: id });
+  await Personnage.deleteOne({ _id: id });
 }
 
 /******************************************************************************

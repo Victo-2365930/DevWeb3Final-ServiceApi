@@ -13,7 +13,7 @@ import { IPersonnage, Personnage } from '@src/models/Personnage';
  */
 
 async function getOne(id: string): Promise<IPersonnage | null> {
-  const personnage = await Personnage.findOne({ id: id });
+  const personnage = await Personnage.findById(id);
   return personnage;
 }
 

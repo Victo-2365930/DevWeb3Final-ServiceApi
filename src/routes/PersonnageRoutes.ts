@@ -13,8 +13,8 @@ import { IReq, IRes } from './common/types';
  */
 async function getOne(req: IReq, res: IRes) {
   const { id } = req.params;
-  const user = await PersonnageService.getById(id as string);
-  res.status(HttpStatusCodes.OK).json({ user });
+  const personnage = await PersonnageService.getById(id as string);
+  res.status(HttpStatusCodes.OK).json({ personnage });
 }
 
 /**

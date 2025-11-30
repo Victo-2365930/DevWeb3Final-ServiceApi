@@ -16,12 +16,8 @@ export const PERSONNAGE_NON_TROUVE = 'Personnage non trouvé';
 /**
  * Trouver un user par son ID
  */
-async function getById(id: string): Promise<IPersonnage> {
-  const personnage = await Personnage.findById(id).exec();
-  if (!personnage) {
-    throw new RouteError(HttpStatusCodes.NOT_FOUND, PERSONNAGE_NON_TROUVE);
-  }
-  return personnage;
+async function getById(id: string): Promise<IPersonnage | null> {
+  return PersonnageRepo.getOne(id);
 }
 
 /**

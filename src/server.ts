@@ -27,9 +27,9 @@ app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
 
 // Show routes called in console during development
-//if (ENV.NodeEnv === NodeEnvs.Dev) {
-app.use(morgan('dev'));
-//}
+if (ENV.NodeEnv === NodeEnvs.Dev) {
+  app.use(morgan('dev'));
+}
 
 // Security
 if (ENV.NodeEnv === NodeEnvs.Production) {

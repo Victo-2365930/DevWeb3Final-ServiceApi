@@ -13,7 +13,7 @@ import { Types } from 'mongoose';
  */
 
 async function getOne(id: string): Promise<IPersonnage | null> {
-  const personnage = await Personnage.findById(id);
+  const personnage = await Personnage.findOne({ _id: id });
   return personnage;
 }
 

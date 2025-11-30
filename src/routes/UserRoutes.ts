@@ -4,12 +4,9 @@ import { IReq, IRes } from './common/types';
 import UserService from '@src/services/UserService';
 
 /**
- * Functions
- */
-
-/**
- *
- *  Extraire un User par son ID
+ * Pour extraire un user par son id
+ * @param req
+ * @param res
  */
 async function getOne(req: IReq, res: IRes) {
   const { id } = req.params;
@@ -18,7 +15,9 @@ async function getOne(req: IReq, res: IRes) {
 }
 
 /**
- * Ajouter un utilisateur.
+ * POur ajouter un user
+ * @param req
+ * @param res
  */
 async function add(req: IReq, res: IRes) {
   const { user } = req.body;
@@ -37,7 +36,9 @@ async function update(req: IReq, res: IRes) {
   */
 
 /**
- * Supprimer un utilisateur.
+ * Pour supprimer un user
+ * @param req
+ * @param res
  */
 async function delete_(req: IReq, res: IRes) {
   const { id } = req.params;

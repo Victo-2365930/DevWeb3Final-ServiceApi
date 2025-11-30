@@ -14,14 +14,18 @@ export const USER_NON_TROUVE = 'Utilisateur non trouvé';
 ******************************************************************************/
 
 /**
- * Trouver un user par son ID
+ * POur extraire un user à partir de son id
+ * @param id id du user à extraire
+ * @returns Un user ou null si non trouvé
  */
 async function getById(id: string): Promise<IUser | null> {
   return UserRepo.getOne(id);
 }
 
 /**
- * Ajouter un user
+ * Pour ajouter un user
+ * @param user User à ajouter
+ * @returns VOID
  */
 async function addOne(user: IUser): Promise<void> {
   return UserRepo.add(user);
@@ -44,7 +48,9 @@ async function updateOne(user: IUser): Promise<void> {
 */
 
 /**
- * Delete a user by their id.
+ * Pour supprimer un user
+ * @param id id du user à supprimer
+ * @returns VOID
  */
 async function _delete(id: string): Promise<void> {
   const persists = await UserRepo.getOne(id);

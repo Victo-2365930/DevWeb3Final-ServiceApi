@@ -75,10 +75,6 @@ leRouterUser.get(Paths.Users.GetById, UserRoutes.getOne);
 leRouterPersonnage.get(Paths.Personnage.GetById, PersonnageRoutes.getOne);
 leRouterPersonnage.get(Paths.Personnage.GetAll, PersonnageRoutes.getAll);
 leRouterPersonnage.get(
-  Paths.Personnage.GetAllByLevel,
-  PersonnageRoutes.getAllByLevel,
-);
-leRouterPersonnage.get(
   Paths.Personnage.GetAllByJoueur,
   PersonnageRoutes.getAllByJoueur,
 );

@@ -28,13 +28,6 @@ function getAll(): Promise<IPersonnage[]> {
 }
 
 /**
- * Extraire tous les personnages par leur niveau
- */
-function getAllByLevel(niveau: number): Promise<IPersonnage[]> {
-  return PersonnageRepo.getAllByLevel(niveau);
-}
-
-/**
  * Extraire tous les personnages par leur nom de joueur
  */
 function getAllByJoueur(id_joueur: string): Promise<IPersonnage[]> {
@@ -83,7 +76,6 @@ async function _delete(id: string): Promise<void> {
 export default {
   getById,
   getAll,
-  getAllByLevel,
   getAllByJoueur,
   addOne,
   updateOne,

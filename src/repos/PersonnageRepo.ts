@@ -28,18 +28,6 @@ async function getAll(): Promise<IPersonnage[]> {
 }
 
 /**
- * Extraire tous les personnage par niveau
- *
- * @param {number} niveau - Niveau de personnage à extraire
- *
- * @returns {IPersonnage[]} Un tableau de tous les personnages avec ce niveau
- */
-async function getAllByLevel(niveau: number): Promise<IPersonnage[]> {
-  const personnages = await Personnage.find({ niveau: niveau });
-  return personnages;
-}
-
-/**
  * Extraire tous les personnages du joueur
  *
  * @param {string} nom_joueur - nom du joueur
@@ -111,7 +99,6 @@ async function delete_(id: string): Promise<void> {
 
 export default {
   getOne,
-  getAllByLevel,
   getAllByJoueur,
   getAll,
   add,

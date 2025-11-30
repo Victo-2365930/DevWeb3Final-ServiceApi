@@ -26,15 +26,6 @@ async function getAll(_: IReq, res: IRes) {
 }
 
 /**
- * Extraire tous les personnages selon leur niveau
- */
-async function getAllByLevel(req: IReq, res: IRes) {
-  const { niveau } = req.params;
-  const personnages = await PersonnageService.getAllByLevel(niveau as number);
-  res.status(HttpStatusCodes.OK).json({ personnages });
-}
-
-/**
  * Extraire tous les personnages d'un joueur à partir de son ID
  */
 async function getAllByJoueur(req: IReq, res: IRes) {
@@ -79,7 +70,6 @@ async function delete_(req: IReq, res: IRes) {
 export default {
   getOne,
   getAll,
-  getAllByLevel,
   getAllByJoueur,
   add,
   update,

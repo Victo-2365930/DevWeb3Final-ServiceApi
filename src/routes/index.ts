@@ -67,7 +67,6 @@ function validateUser(req: Request, res: Response, next: NextFunction) {
   }
 }
 
-// Init router
 const leRouterPersonnage = Router();
 const leRouterUser = Router();
 
@@ -77,7 +76,8 @@ leRouterPersonnage.get(
   Paths.Personnage.GetAllByJoueur,
   PersonnageRoutes.getAllByJoueur,
 );
-leRouterPersonnage.get(Paths.Personnage.GetById, PersonnageRoutes.getOne); // /:id doit être en dernier
+leRouterPersonnage.get(Paths.Personnage.GetById, PersonnageRoutes.getOne);
+
 leRouterPersonnage.post(
   Paths.Personnage.Add,
   validatePersonnage,

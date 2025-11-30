@@ -2,7 +2,7 @@ export default {
   Base: '/api',
   Personnage: {
     Base: '/personnages',
-    GetById: 'getById/:id',
+    GetById: '/:id',
     GetAll: '/all',
     GetAllByLevel: '/allParNiveau/:niveau',
     GetAllByJoueur: '/allParJoueur/:nomJoueur',

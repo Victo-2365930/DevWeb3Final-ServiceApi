@@ -2,7 +2,7 @@ export default {
   Base: '/api',
   GenerateToken: {
     Base: '/generatetoken',
-    Get: '/',
+    Post: '/',
   },
   Personnage: {
     Base: '/personnages',

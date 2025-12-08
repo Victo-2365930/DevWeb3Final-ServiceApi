@@ -18,7 +18,7 @@ const apiRouter = Router();
 
 //JWT Token
 const tokenRouter = Router();
-tokenRouter.post(Paths.GenerateToken.Get, JetonRoutes.generateToken);
+tokenRouter.post(Paths.GenerateToken.Post, JetonRoutes.generateToken);
 
 function validatePersonnage(req: Request, res: Response, next: NextFunction) {
   if (req.body === null) {

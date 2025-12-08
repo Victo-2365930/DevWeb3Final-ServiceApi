@@ -16,8 +16,8 @@ const Validators = {
  * @param {IRes} res
  */
 async function generateToken(req: IReq, res: IRes) {
-  const userLogin = req.body.userLogin as IUserLogin;
-  const token = await JetonService.generateToken(userLogin);
+  const { userLogin } = req.body;
+  const token = await JetonService.generateToken(userLogin as IUserLogin);
   return res.send({ token: token });
 }
 

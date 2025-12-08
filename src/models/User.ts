@@ -1,7 +1,7 @@
-import { isRelationalKey, transIsDate } from '@src/common/util/validators';
+import { transIsDate } from '@src/common/util/validators';
 import { isString } from 'jet-validators';
 import { parseObject, TParseOnError } from 'jet-validators/utils';
-import mongoose, { model, Schema } from 'mongoose';
+import { model, Schema } from 'mongoose';
 
 /******************************************************************************
                                   Types
@@ -35,7 +35,7 @@ const UserSchema = new Schema<IUser>({
     unique: true,
     lowercase: true,
     match: [
-      /^\w+([.-]?\w+)*@\w+([.-]?\w+)*(\.\w{2,3})+$/, //original: /^\w+([\.-]?\w+)*@\w+([\.-]?\w+)*(\.\w{2,3})+$/
+      /^\w+([.-]?\w+)*@\w+([.-]?\w+)*(\.\w{2,3})+$/,
       'Le courriel doit être valide (x@y.zz) .',
     ],
     required: [true, 'Le courriel est requis'],

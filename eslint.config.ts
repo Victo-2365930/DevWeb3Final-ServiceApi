@@ -1,8 +1,7 @@
 import { defineConfig } from 'eslint/config';
 import eslint from '@eslint/js';
 import tseslint from 'typescript-eslint';
-import stylisticJs from '@stylistic/eslint-plugin-js';
-import stylisticTs from '@stylistic/eslint-plugin-ts';
+import stylisticJs from '@stylistic/eslint-plugin';
 import nodePlugin from 'eslint-plugin-n';
 
 export default defineConfig([
@@ -27,7 +26,7 @@ export default defineConfig([
   {
     plugins: {
       '@stylistic/js': stylisticJs,
-      '@stylistic/ts': stylisticTs,
+      '@stylistic/ts': stylisticJs,
     },
   },
 

@@ -1,5 +1,4 @@
 import { IPersonnage, Personnage } from '@src/models/Personnage';
-import { Types } from 'mongoose';
 
 /******************************************************************************
                                 Functions

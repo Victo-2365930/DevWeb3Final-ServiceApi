@@ -12,9 +12,10 @@
     "type-check": "tsc --noEmit"
   },
   "engines": {
-    "node": ">=16.0.0"
+    "node": ">=22.0.0"
   },
   "dependencies": {
+    "@stylistic/eslint-plugin": "^5.6.1",
     "@types/jsonwebtoken": "^9.0.10",
     "cookie-parser": "^1.4.7",
     "cors": "^2.8.5",

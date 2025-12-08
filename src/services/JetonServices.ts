@@ -1,6 +1,6 @@
 // **** Variables **** //
 
-import { User, IUserLogin, IUser } from '@src/models/User';
+import { IUserLogin } from '@src/models/User';
 import UserService from './UserService';
 import jwt from 'jsonwebtoken';
 import ENV from '@src/common/constants/ENV';
@@ -14,11 +14,16 @@ export const UTILISATEUR_NOT_FOUND_ERR = 'Utilisateur non trouvé';
  * @returns {Promise} - Le jeton signé
  */
 async function generateToken(utilisateur: IUserLogin): Promise<string> {
-  const utilisateurBD = (await UserService.getAll()).filter(
+  const utilisateursBD = (await UserService.getAll()).filter(
     (user) => user.email === utilisateur.email,
-  )[0];
-  if (utilisateurBD && utilisateurBD.motDePasse === utilisateur.motDePasse) {
-    return jwt.sign(utilisateur.email, ENV.Jwtsecret as string);
+  );
+
+  if (
+    utilisateursBD &&
+    utilisateursBD.length > 0 &&
+    utilisateursBD[0].motDePasse === utilisateur.motDePasse
+  ) {
+    return jwt.sign(utilisateur.email, ENV.Jwtsecret);
   } else {
     return '';
   }

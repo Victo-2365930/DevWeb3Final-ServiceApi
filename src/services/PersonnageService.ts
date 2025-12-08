@@ -1,7 +1,7 @@
 import { RouteError } from '@src/common/util/route-errors';
 import HttpStatusCodes from '@src/common/constants/HttpStatusCodes';
 import PersonnageRepo from '@src/repos/PersonnageRepo';
-import { IPersonnage, Personnage } from '@src/models/Personnage';
+import { IPersonnage } from '@src/models/Personnage';
 
 /******************************************************************************
                                 Constants

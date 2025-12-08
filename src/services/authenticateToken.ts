@@ -7,7 +7,7 @@ import ENV from '@src/common/constants/ENV';
  *
  * @param {Request} req - La requête au serveur
  * @param {Response} res - La réponse du serveur
- * @param {NextFunction} next - La fonction a appeler pour continuer le processus.
+ * @param {NextFunction} next -La fonction a appeler pour continuer le processus
  */
 function authenticateToken(req: Request, res: Response, next: NextFunction) {
   const lastPartOfUrl = req.url.split('/').at(-1);
@@ -16,15 +16,16 @@ function authenticateToken(req: Request, res: Response, next: NextFunction) {
     return;
   }
 
-  const authHeader = req.headers['authorization'];
-  const token = authHeader && authHeader.split(' ')[1];
+  const authHeader = req.headers.authorization;
+  const token = authHeader?.split(' ')[1];
 
-  console.log(token);
+  //console.log(token);
 
   if (token == null) return res.sendStatus(HttpStatusCodes.UNAUTHORIZED);
 
-  jwt.verify(token, ENV.Jwtsecret as string, (err: any, user: any) => {
-    console.log(err);
+  // eslint-disable-next-line @typescript-eslint/no-explicit-any
+  jwt.verify(token, ENV.Jwtsecret, (err: any) => {
+    //console.log(err);
 
     if (err) return res.sendStatus(HttpStatusCodes.FORBIDDEN);
 

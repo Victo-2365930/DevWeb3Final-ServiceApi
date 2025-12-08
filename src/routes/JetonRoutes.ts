@@ -1,8 +1,6 @@
 import JetonService from '@src/services/JetonServices';
 import { IReq, IRes } from './common/types';
 import { parseReq } from './common/util';
-import { isString } from 'jet-validators';
-import { parseObject, TParseOnError } from 'jet-validators/utils';
 import User from '@src/models/User';
 
 /******************************************************************************

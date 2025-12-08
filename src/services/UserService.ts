@@ -14,12 +14,20 @@ export const USER_NON_TROUVE = 'Utilisateur non trouvé';
 ******************************************************************************/
 
 /**
- * POur extraire un user à partir de son id
+ * Pour extraire un user à partir de son id
  * @param id id du user à extraire
  * @returns Un user ou null si non trouvé
  */
 async function getById(id: string): Promise<IUser | null> {
   return UserRepo.getOne(id);
+}
+
+/**
+ * Pour extraire tous les User
+ * @returns une liste de User, peut être vide
+ */
+async function getAll(): Promise<IUser[]> {
+  return UserRepo.getAll();
 }
 
 /**
@@ -67,6 +75,7 @@ async function _delete(id: string): Promise<void> {
 
 export default {
   getById,
+  getAll,
   addOne,
   //updateOne,
   delete: _delete,

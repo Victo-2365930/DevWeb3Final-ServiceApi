@@ -4,7 +4,7 @@
   "scripts": {
     "build": "ts-node ./scripts/build.ts",
     "clean-install": "rm -rf ./node_modules && rm -r package-lock.json && npm i",
-    "dev": "node --env-file=.env -r ts-node/register ./src",
+    "dev": "node --env-file=./config/.env.development -r ts-node/register src/index.ts",
     "dev:hot": "nodemon --exec \"npm run dev\" --watch ./src --ext .ts",
     "lint": "eslint . --fix",
     "start": "NODE_ENV=production node -r ./config.js ./dist",
@@ -15,6 +15,7 @@
     "node": ">=16.0.0"
   },
   "dependencies": {
+    "@types/jsonwebtoken": "^9.0.10",
     "cookie-parser": "^1.4.7",
     "cors": "^2.8.5",
     "dayjs": "^1.11.18",
@@ -27,6 +28,7 @@
     "jet-paths": "^1.1.0",
     "jet-validators": "^1.4.3",
     "jsonfile": "^6.2.0",
+    "jsonwebtoken": "^9.0.2",
     "module-alias": "^2.2.3",
     "mongoose": "^8.19.1",
     "morgan": "^1.10.1"

@@ -1,5 +1,9 @@
 export default {
   Base: '/api',
+  GenerateToken: {
+    Base: '/generatetoken',
+    Get: '/',
+  },
   Personnage: {
     Base: '/personnages',
     GetById: '/:id',

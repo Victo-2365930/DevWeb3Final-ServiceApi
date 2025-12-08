@@ -15,6 +15,15 @@ async function getOne(id: string): Promise<IUser | null> {
 }
 
 /**
+ * Pour extraire tous les users
+ * @returns une liste de tous les IUser, peut être vide
+ */
+async function getAll(): Promise<IUser[]> {
+  const Users = await User.find();
+  return Users;
+}
+
+/**
  * Pour ajouter un user
  * @param user User à ajouter
  */
@@ -54,11 +63,16 @@ async function persists(id: string): Promise<boolean> {
 */
 
 /******************************************************************************
+                                Tests
+******************************************************************************/
+
+/******************************************************************************
                                 Export default
 ******************************************************************************/
 
 export default {
   getOne,
+  getAll,
   add,
   //update,
   delete: delete_,

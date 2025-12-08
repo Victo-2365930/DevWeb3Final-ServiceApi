@@ -6,6 +6,7 @@ import HttpStatusCodes from '@src/common/constants/HttpStatusCodes';
 import { Personnage } from '@src/models/Personnage';
 import UserRoutes from './UserRoutes';
 import { User } from '@src/models/User';
+import JetonRoutes from './JetonRoutes';
 
 /* eslint-disable */
 
@@ -14,6 +15,10 @@ import { User } from '@src/models/User';
 ******************************************************************************/
 
 const apiRouter = Router();
+
+//JWT Token
+const tokenRouter = Router();
+tokenRouter.get(Paths.GenerateToken.Get, JetonRoutes.generateToken);
 
 function validatePersonnage(req: Request, res: Response, next: NextFunction) {
   if (req.body === null) {
@@ -92,12 +97,13 @@ leRouterPersonnage.delete(Paths.Personnage.Delete, PersonnageRoutes.delete);
 
 // User Routes
 leRouterUser.get(Paths.Users.GetById, UserRoutes.getOne);
-leRouterUser.post(Paths.Users.Add, UserRoutes.add);
+leRouterUser.post(Paths.Users.Add, validateUser, UserRoutes.add);
 leRouterUser.delete(Paths.Users.Delete, UserRoutes.delete);
 
 // Add leRouter
 apiRouter.use(Paths.Users.Base, leRouterUser);
 apiRouter.use(Paths.Personnage.Base, leRouterPersonnage);
+apiRouter.use(Paths.GenerateToken.Base, tokenRouter);
 
 /******************************************************************************
                                 Export default

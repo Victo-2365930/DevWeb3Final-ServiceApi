@@ -17,19 +17,40 @@ import { agent } from './support/setup';
 /******************************************************************************
                                Constants
 ******************************************************************************/
+//Dummy
 
 // Dummy users for GET req
-const DB_USERS = [
-  User.new({ name: 'Sean Maxwell', email: 'sean.maxwell@gmail.com' }),
-  User.new({ name: 'John Smith', email: 'john.smith@gmail.com' }),
-  User.new({ name: 'Gordan Freeman', email: 'gordan.freeman@gmail.com' }),
+const DB_USERS: IUser[] = [
+  {
+    _id: '692c9dc61d35a7d86ba595cz',
+    nom: 'John Coutu',
+    email: 'moncourriel@jaimemoncourriel.ca',
+    motDePasse: 'qwerty123',
+    created: new Date(),
+  },
+  {
+    _id: '692c9dd11d35a7d86ba595cz',
+    nom: 'John Dark',
+    email: 'EmailDeLavie@incroyableCourriel.ca',
+    motDePasse: 'incroyablemdp123',
+    created: new Date(),
+  },
+  {
+    _id: '692c9dde1d35a7d86ba595cz',
+    nom: 'John BobLeChef',
+    email: 'wowuncourriel@leserveur.ca',
+    motDePasse: 'mdppaschercher999',
+    created: new Date(),
+  },
 ] as const;
 
 // Don't compare "id" and "created" cause those are set dynamically by the
 // database
 const compareUserArrays = customDeepCompare({
-  onlyCompareProps: ['name', 'email'],
+  onlyCompareProps: ['nom', 'email'],
 });
+
+const mockify = require('@jazim/mock-mongoose');
 
 /******************************************************************************
                                  Tests

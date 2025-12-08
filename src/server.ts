@@ -19,10 +19,20 @@ import { RouteError } from '@src/common/util/route-errors';
 import { NodeEnvs } from '@src/common/constants';
 import cors from 'cors';
 import authenticateToken from './services/authenticateToken';
+import swaggerUi from 'swagger-ui-express';
+import fs from 'fs';
+const swaggerDocument = JSON.parse(
+  fs.readFileSync('./src/config/documentation.json', 'utf8'),
+);
 
 /******************************************************************************
                                 Setup
 ******************************************************************************/
+
+const swaggerOptions = {
+  customCss: '.swagger-ui .topbar { display: none }',
+  customSiteTitle: 'Demo API',
+};
 
 const app = express();
 
@@ -45,6 +55,12 @@ if (ENV.NodeEnv === NodeEnvs.Production) {
     app.use(helmet());
   }
 }
+
+app.use(
+  '/api/docs',
+  swaggerUi.serve,
+  swaggerUi.setup(swaggerDocument, swaggerOptions),
+);
 
 //JTW Token
 app.use(authenticateToken);

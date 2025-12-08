@@ -8,8 +8,6 @@ import UserRoutes from './UserRoutes';
 import { User } from '@src/models/User';
 import JetonRoutes from './JetonRoutes';
 
-/* eslint-disable */
-
 /******************************************************************************
                                 Setup
 ******************************************************************************/
@@ -58,7 +56,7 @@ function validateUser(req: Request, res: Response, next: NextFunction) {
   if (req.body.user === null) {
     res
       .status(HttpStatusCodes.BAD_REQUEST)
-      .send({ error: "Tous les paramètres d'un User sont requis" })
+      .send({ error: 'Tous les paramètres d\'un User sont requis' })
       .end();
     return;
   }

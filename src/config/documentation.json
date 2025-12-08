@@ -1,0 +1,980 @@
+{
+  "openapi": "3.1.0",
+  "info": {
+    "title": "API Jeu de Rôle (Anima)",
+    "version": "1.0.0",
+    "description": "API pour la gestion des utilisateurs (joueurs) et des personnages, inspirée du jeu de rôle Anima: Beyond Fantasy."
+  },
+  "servers": [
+    {
+      "url": "http://localhost:3000/api",
+      "description": "Serveur de développement local"
+    },
+    {
+      "url": "https://personnagesapi-f7fwaaddehfpc9eb.canadacentral-01.azurewebsites.net",
+      "description": "Serveur de production"
+    }
+  ],
+  "tags": [
+    {
+      "name": "Authentification",
+      "description": "Opérations de connexion et de génération de jeton (Token)."
+    },
+    {
+      "name": "Utilisateurs (Joueurs)",
+      "description": "Gestion des comptes joueurs."
+    },
+    {
+      "name": "Personnages",
+      "description": "Création, consultation et modification des personnages de jeu."
+    }
+  ],
+  "components": {
+    "securitySchemes": {
+      "bearerAuth": {
+        "type": "http",
+        "scheme": "bearer",
+        "bearerFormat": "JWT"
+      }
+    }
+  },
+  "paths": {
+    "/generatetoken": {
+      "post": {
+        "summary": "Générer un jeton JWT",
+        "tags": ["Authentification"],
+        "description": "Authentifie un utilisateur avec son email et mot de passe, et retourne un jeton JWT pour l'accès aux routes sécurisées.",
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "type": "object",
+                "properties": {
+                  "userLogin": {
+                    "type": "object",
+                    "required": ["email", "motDePasse"],
+                    "properties": {
+                      "email": {
+                        "type": "string",
+                        "format": "email",
+                        "example": "joueur@exemple.com"
+                      },
+                      "motDePasse": {
+                        "type": "string",
+                        "format": "password",
+                        "example": "monMotDePasse"
+                      }
+                    }
+                  }
+                }
+              },
+              "example": {
+                "userLogin": {
+                  "email": "joueur@exemple.com",
+                  "motDePasse": "monMotDePasse"
+                }
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "Jeton généré avec succès.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "token": {
+                      "type": "string",
+                      "description": "Le jeton JWT à utiliser pour l'authentification.",
+                      "example": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9..."
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "401": {
+            "description": "Non autorisé (Identifiants invalides)."
+          },
+          "400": {
+            "description": "Requête invalide (paramètres manquants ou invalides)."
+          }
+        }
+      }
+    },
+    "/users/{id}": {
+      "get": {
+        "summary": "Récupérer un utilisateur par ID",
+        "tags": ["Utilisateurs (Joueurs)"],
+        "description": "Récupère les informations d'un utilisateur spécifique.",
+        "security": [
+          {
+            "bearerAuth": []
+          }
+        ],
+        "parameters": [
+          {
+            "in": "path",
+            "name": "id",
+            "schema": {
+              "type": "string"
+            },
+            "required": true,
+            "description": "ID MongoDB de l'utilisateur à récupérer."
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Utilisateur récupéré avec succès.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "user": {
+                      "type": "object",
+                      "required": ["nom", "email", "motDePasse"],
+                      "properties": {
+                        "_id": {
+                          "type": "string",
+                          "example": "65b98e1f592657e2501a357f"
+                        },
+                        "nom": {
+                          "type": "string",
+                          "maxLength": 100,
+                          "example": "Jane Doe"
+                        },
+                        "email": {
+                          "type": "string",
+                          "format": "email",
+                          "example": "jane.doe@example.com"
+                        },
+                        "motDePasse": {
+                          "type": "string",
+                          "description": "Hachage du mot de passe (ne sera pas retourné en production).",
+                          "example": "HASHED_PASSWORD"
+                        },
+                        "created": {
+                          "type": "string",
+                          "format": "date-time",
+                          "example": "2024-01-31T12:00:00.000Z"
+                        }
+                      }
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "404": {
+            "description": "Utilisateur non trouvé."
+          },
+          "401": {
+            "description": "Non autorisé (Token manquant ou invalide)."
+          }
+        }
+      }
+    },
+    "/users/add": {
+      "post": {
+        "summary": "Ajouter un nouvel utilisateur",
+        "tags": ["Utilisateurs (Joueurs)"],
+        "description": "Crée un nouveau compte utilisateur. Ne nécessite pas d'authentification.",
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "type": "object",
+                "properties": {
+                  "user": {
+                    "type": "object",
+                    "required": ["nom", "email", "motDePasse"],
+                    "properties": {
+                      "nom": {
+                        "type": "string",
+                        "maxLength": 100,
+                        "example": "Jean Le Joueur"
+                      },
+                      "email": {
+                        "type": "string",
+                        "format": "email",
+                        "example": "nouveau@mail.com"
+                      },
+                      "motDePasse": {
+                        "type": "string",
+                        "minLength": 8,
+                        "example": "monMotDePasse123"
+                      }
+                    }
+                  }
+                }
+              },
+              "example": {
+                "user": {
+                  "nom": "Jean Le Joueur",
+                  "email": "nouveau@mail.com",
+                  "motDePasse": "monMotDePasse123"
+                }
+              }
+            }
+          }
+        },
+        "responses": {
+          "201": {
+            "description": "Utilisateur créé avec succès."
+          },
+          "400": {
+            "description": "Requête invalide (validation des données échouée ou paramètres manquants)."
+          }
+        }
+      }
+    },
+    "/users/delete/{id}": {
+      "delete": {
+        "summary": "Supprimer un utilisateur",
+        "tags": ["Utilisateurs (Joueurs)"],
+        "description": "Supprime un utilisateur par son ID.",
+        "security": [
+          {
+            "bearerAuth": []
+          }
+        ],
+        "parameters": [
+          {
+            "in": "path",
+            "name": "id",
+            "schema": {
+              "type": "string"
+            },
+            "required": true,
+            "description": "ID MongoDB de l'utilisateur à supprimer."
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Utilisateur supprimé avec succès."
+          },
+          "404": {
+            "description": "Utilisateur non trouvé."
+          },
+          "401": {
+            "description": "Non autorisé (Token manquant ou invalide)."
+          }
+        }
+      }
+    },
+    "/personnages/{id}": {
+      "get": {
+        "summary": "Récupérer un personnage par ID",
+        "tags": ["Personnages"],
+        "description": "Récupère les détails d'un personnage spécifique.",
+        "security": [
+          {
+            "bearerAuth": []
+          }
+        ],
+        "parameters": [
+          {
+            "in": "path",
+            "name": "id",
+            "schema": {
+              "type": "string"
+            },
+            "required": true,
+            "description": "ID MongoDB du personnage."
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Personnage récupéré avec succès.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "personnage": {
+                      "type": "object",
+                      "required": [
+                        "niveau",
+                        "nom",
+                        "joueur",
+                        "classe",
+                        "race",
+                        "statistique"
+                      ],
+                      "properties": {
+                        "_id": {
+                          "type": "string",
+                          "example": "65b98e1f592657e2501a3580"
+                        },
+                        "niveau": {
+                          "type": "integer",
+                          "minimum": 0,
+                          "maximum": 20,
+                          "example": 5
+                        },
+                        "nom": {
+                          "type": "string",
+                          "maxLength": 100,
+                          "example": "Cain Sarrion"
+                        },
+                        "joueur": {
+                          "type": "string",
+                          "description": "ID MongoDB du joueur (User) associé.",
+                          "example": "65b98e1f592657e2501a357f"
+                        },
+                        "vivant": {
+                          "type": "boolean",
+                          "default": true,
+                          "example": true
+                        },
+                        "date_premiere_partie": {
+                          "type": "string",
+                          "format": "date-time",
+                          "example": "2024-01-31T12:00:00.000Z"
+                        },
+                        "classe": {
+                          "type": "string",
+                          "enum": [
+                            "Guerrier",
+                            "Guerrier Acrobate",
+                            "Paladin",
+                            "Paladin Noir",
+                            "Maître d'arme",
+                            "Virtuose martiale",
+                            "Tao",
+                            "Explorateur",
+                            "Ombre",
+                            "Voleur",
+                            "Assassin",
+                            "Sorcier",
+                            "Mage de Bataille",
+                            "Illusioniste",
+                            "Sorcier Mentaliste",
+                            "Convocateur",
+                            "Guerrier Convocateur",
+                            "Mentaliste",
+                            "Guerrier Mentaliste",
+                            "Touche à Tout"
+                          ],
+                          "example": "Guerrier"
+                        },
+                        "race": {
+                          "type": "string",
+                          "enum": [
+                            "Humain",
+                            "Sylvain",
+                            "Jayan",
+                            "D'Anjayni",
+                            "Evudan",
+                            "Dainah",
+                            "Duk'zarist",
+                            "Devas",
+                            "Vetalas",
+                            "Tuan Dalyr"
+                          ],
+                          "example": "Humain"
+                        },
+                        "statistique": {
+                          "type": "object",
+                          "required": [
+                            "force",
+                            "dexterite",
+                            "agilite",
+                            "constitution",
+                            "intelligence",
+                            "pouvoir",
+                            "volonte",
+                            "perception",
+                            "apparence"
+                          ],
+                          "properties": {
+                            "force": {
+                              "type": "integer",
+                              "minimum": 1,
+                              "maximum": 20,
+                              "example": 10
+                            },
+                            "dexterite": {
+                              "type": "integer",
+                              "minimum": 1,
+                              "maximum": 20,
+                              "example": 15
+                            },
+                            "agilite": {
+                              "type": "integer",
+                              "minimum": 1,
+                              "maximum": 20,
+                              "example": 12
+                            },
+                            "constitution": {
+                              "type": "integer",
+                              "minimum": 1,
+                              "maximum": 20,
+                              "example": 10
+                            },
+                            "intelligence": {
+                              "type": "integer",
+                              "minimum": 1,
+                              "maximum": 20,
+                              "example": 10
+                            },
+                            "pouvoir": {
+                              "type": "integer",
+                              "minimum": 1,
+                              "maximum": 20,
+                              "example": 10
+                            },
+                            "volonte": {
+                              "type": "integer",
+                              "minimum": 1,
+                              "maximum": 20,
+                              "example": 10
+                            },
+                            "perception": {
+                              "type": "integer",
+                              "minimum": 1,
+                              "maximum": 20,
+                              "example": 14
+                            },
+                            "apparence": {
+                              "type": "integer",
+                              "minimum": 1,
+                              "maximum": 10,
+                              "example": 5
+                            }
+                          }
+                        }
+                      }
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "404": {
+            "description": "Personnage non trouvé."
+          },
+          "401": {
+            "description": "Non autorisé."
+          }
+        }
+      }
+    },
+    "/personnages/all": {
+      "get": {
+        "summary": "Récupérer tous les personnages",
+        "tags": ["Personnages"],
+        "description": "Récupère la liste de tous les personnages.",
+        "security": [
+          {
+            "bearerAuth": []
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Liste des personnages récupérée avec succès.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "personnages": {
+                      "type": "array",
+                      "items": {
+                        "type": "object",
+                        "properties": {
+                          "_id": {
+                            "type": "string"
+                          },
+                          "nom": {
+                            "type": "string"
+                          },
+                          "niveau": {
+                            "type": "integer"
+                          }
+                        }
+                      }
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "401": {
+            "description": "Non autorisé."
+          }
+        }
+      }
+    },
+    "/personnages/allParJoueur/{idJoueur}": {
+      "get": {
+        "summary": "Récupérer les personnages d'un joueur",
+        "tags": ["Personnages"],
+        "description": "Récupère la liste de tous les personnages créés par un joueur spécifique.",
+        "security": [
+          {
+            "bearerAuth": []
+          }
+        ],
+        "parameters": [
+          {
+            "in": "path",
+            "name": "idJoueur",
+            "schema": {
+              "type": "string"
+            },
+            "required": true,
+            "description": "ID MongoDB du joueur."
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Liste des personnages récupérée avec succès.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "personnages": {
+                      "type": "array",
+                      "items": {
+                        "type": "object",
+                        "properties": {
+                          "_id": {
+                            "type": "string"
+                          },
+                          "nom": {
+                            "type": "string"
+                          },
+                          "niveau": {
+                            "type": "integer"
+                          }
+                        }
+                      }
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "401": {
+            "description": "Non autorisé."
+          },
+          "404": {
+            "description": "Joueur non trouvé."
+          }
+        }
+      }
+    },
+    "/personnages/add": {
+      "post": {
+        "summary": "Ajouter un nouveau personnage",
+        "tags": ["Personnages"],
+        "description": "Crée et enregistre un nouveau personnage.",
+        "security": [
+          {
+            "bearerAuth": []
+          }
+        ],
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "type": "object",
+                "properties": {
+                  "personnage": {
+                    "type": "object",
+                    "required": [
+                      "niveau",
+                      "nom",
+                      "joueur",
+                      "classe",
+                      "race",
+                      "statistique"
+                    ],
+                    "properties": {
+                      "niveau": {
+                        "type": "integer",
+                        "minimum": 0,
+                        "maximum": 20,
+                        "example": 1
+                      },
+                      "nom": {
+                        "type": "string",
+                        "maxLength": 100,
+                        "example": "Nouvelle Ombre"
+                      },
+                      "joueur": {
+                        "type": "string",
+                        "description": "ID MongoDB du joueur (User) associé.",
+                        "example": "65b98e1f592657e2501a357f"
+                      },
+                      "classe": {
+                        "type": "string",
+                        "enum": [
+                          "Guerrier",
+                          "Guerrier Acrobate",
+                          "Paladin",
+                          "Paladin Noir",
+                          "Maître d'arme",
+                          "Virtuose martiale",
+                          "Tao",
+                          "Explorateur",
+                          "Ombre",
+                          "Voleur",
+                          "Assassin",
+                          "Sorcier",
+                          "Mage de Bataille",
+                          "Illusioniste",
+                          "Sorcier Mentaliste",
+                          "Convocateur",
+                          "Guerrier Convocateur",
+                          "Mentaliste",
+                          "Guerrier Mentaliste",
+                          "Touche à Tout"
+                        ],
+                        "example": "Ombre"
+                      },
+                      "race": {
+                        "type": "string",
+                        "enum": [
+                          "Humain",
+                          "Sylvain",
+                          "Jayan",
+                          "D'Anjayni",
+                          "Evudan",
+                          "Dainah",
+                          "Duk'zarist",
+                          "Devas",
+                          "Vetalas",
+                          "Tuan Dalyr"
+                        ],
+                        "example": "Humain"
+                      },
+                      "statistique": {
+                        "type": "object",
+                        "required": [
+                          "force",
+                          "dexterite",
+                          "agilite",
+                          "constitution",
+                          "intelligence",
+                          "pouvoir",
+                          "volonte",
+                          "perception",
+                          "apparence"
+                        ],
+                        "properties": {
+                          "force": {
+                            "type": "integer",
+                            "minimum": 1,
+                            "maximum": 20,
+                            "example": 8
+                          },
+                          "dexterite": {
+                            "type": "integer",
+                            "minimum": 1,
+                            "maximum": 20,
+                            "example": 15
+                          },
+                          "agilite": {
+                            "type": "integer",
+                            "minimum": 1,
+                            "maximum": 20,
+                            "example": 12
+                          },
+                          "constitution": {
+                            "type": "integer",
+                            "minimum": 1,
+                            "maximum": 20,
+                            "example": 10
+                          },
+                          "intelligence": {
+                            "type": "integer",
+                            "minimum": 1,
+                            "maximum": 20,
+                            "example": 10
+                          },
+                          "pouvoir": {
+                            "type": "integer",
+                            "minimum": 1,
+                            "maximum": 20,
+                            "example": 10
+                          },
+                          "volonte": {
+                            "type": "integer",
+                            "minimum": 1,
+                            "maximum": 20,
+                            "example": 10
+                          },
+                          "perception": {
+                            "type": "integer",
+                            "minimum": 1,
+                            "maximum": 20,
+                            "example": 14
+                          },
+                          "apparence": {
+                            "type": "integer",
+                            "minimum": 1,
+                            "maximum": 10,
+                            "example": 5
+                          }
+                        }
+                      }
+                    }
+                  }
+                }
+              },
+              "example": {
+                "personnage": {
+                  "niveau": 1,
+                  "nom": "Nouvelle Ombre",
+                  "joueur": "65b98e1f592657e2501a357f",
+                  "classe": "Ombre",
+                  "race": "Humain",
+                  "statistique": {
+                    "force": 8,
+                    "dexterite": 15,
+                    "agilite": 12,
+                    "constitution": 10,
+                    "intelligence": 10,
+                    "pouvoir": 10,
+                    "volonte": 10,
+                    "perception": 14,
+                    "apparence": 5
+                  }
+                }
+              }
+            }
+          }
+        },
+        "responses": {
+          "201": {
+            "description": "Personnage créé avec succès."
+          },
+          "400": {
+            "description": "Requête invalide (validation ou paramètres manquants)."
+          },
+          "401": {
+            "description": "Non autorisé."
+          }
+        }
+      }
+    },
+    "/personnages/update": {
+      "put": {
+        "summary": "Mettre à jour un personnage",
+        "tags": ["Personnages"],
+        "description": "Met à jour un personnage existant. L'ID du personnage doit être inclus dans le corps de la requête.",
+        "security": [
+          {
+            "bearerAuth": []
+          }
+        ],
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "type": "object",
+                "properties": {
+                  "personnage": {
+                    "type": "object",
+                    "required": [
+                      "_id",
+                      "niveau",
+                      "nom",
+                      "joueur",
+                      "classe",
+                      "race",
+                      "statistique"
+                    ],
+                    "properties": {
+                      "_id": {
+                        "type": "string",
+                        "example": "65b98e1f592657e2501a3580"
+                      },
+                      "niveau": {
+                        "type": "integer",
+                        "minimum": 0,
+                        "maximum": 20,
+                        "example": 6
+                      },
+                      "nom": {
+                        "type": "string",
+                        "maxLength": 100,
+                        "example": "Ombre Mise à Jour"
+                      },
+                      "joueur": {
+                        "type": "string",
+                        "example": "65b98e1f592657e2501a357f"
+                      },
+                      "classe": {
+                        "type": "string",
+                        "enum": [
+                          "Guerrier",
+                          "Guerrier Acrobate",
+                          "Paladin",
+                          "Paladin Noir",
+                          "Maître d'arme",
+                          "Virtuose martiale",
+                          "Tao",
+                          "Explorateur",
+                          "Ombre",
+                          "Voleur",
+                          "Assassin",
+                          "Sorcier",
+                          "Mage de Bataille",
+                          "Illusioniste",
+                          "Sorcier Mentaliste",
+                          "Convocateur",
+                          "Guerrier Convocateur",
+                          "Mentaliste",
+                          "Guerrier Mentaliste",
+                          "Touche à Tout"
+                        ],
+                        "example": "Ombre"
+                      },
+                      "race": {
+                        "type": "string",
+                        "enum": [
+                          "Humain",
+                          "Sylvain",
+                          "Jayan",
+                          "D'Anjayni",
+                          "Evudan",
+                          "Dainah",
+                          "Duk'zarist",
+                          "Devas",
+                          "Vetalas",
+                          "Tuan Dalyr"
+                        ],
+                        "example": "Humain"
+                      },
+                      "statistique": {
+                        "type": "object",
+                        "properties": {
+                          "force": {
+                            "type": "integer",
+                            "example": 8
+                          },
+                          "dexterite": {
+                            "type": "integer",
+                            "example": 16
+                          },
+                          "agilite": {
+                            "type": "integer",
+                            "example": 12
+                          },
+                          "constitution": {
+                            "type": "integer",
+                            "example": 10
+                          },
+                          "intelligence": {
+                            "type": "integer",
+                            "example": 10
+                          },
+                          "pouvoir": {
+                            "type": "integer",
+                            "example": 10
+                          },
+                          "volonte": {
+                            "type": "integer",
+                            "example": 10
+                          },
+                          "perception": {
+                            "type": "integer",
+                            "example": 14
+                          },
+                          "apparence": {
+                            "type": "integer",
+                            "example": 5
+                          }
+                        }
+                      }
+                    }
+                  }
+                }
+              },
+              "example": {
+                "personnage": {
+                  "_id": "65b98e1f592657e2501a3580",
+                  "niveau": 6,
+                  "nom": "Ombre Mise à Jour",
+                  "joueur": "65b98e1f592657e2501a357f",
+                  "classe": "Ombre",
+                  "race": "Humain",
+                  "statistique": {
+                    "force": 8,
+                    "dexterite": 16,
+                    "agilite": 12,
+                    "constitution": 10,
+                    "intelligence": 10,
+                    "pouvoir": 10,
+                    "volonte": 10,
+                    "perception": 14,
+                    "apparence": 5
+                  }
+                }
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "Personnage mis à jour avec succès."
+          },
+          "400": {
+            "description": "Requête invalide."
+          },
+          "404": {
+            "description": "Personnage non trouvé."
+          },
+          "401": {
+            "description": "Non autorisé."
+          }
+        }
+      }
+    },
+    "/personnages/delete/{id}": {
+      "delete": {
+        "summary": "Supprimer un personnage",
+        "tags": ["Personnages"],
+        "description": "Supprime un personnage par son ID.",
+        "security": [
+          {
+            "bearerAuth": []
+          }
+        ],
+        "parameters": [
+          {
+            "in": "path",
+            "name": "id",
+            "schema": {
+              "type": "string"
+            },
+            "required": true,
+            "description": "ID MongoDB du personnage à supprimer."
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Personnage supprimé avec succès."
+          },
+          "404": {
+            "description": "Personnage non trouvé."
+          },
+          "401": {
+            "description": "Non autorisé."
+          }
+        }
+      }
+    }
+  }
+}

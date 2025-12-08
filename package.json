@@ -4,7 +4,7 @@
   "scripts": {
     "build": "ts-node ./scripts/build.ts",
     "clean-install": "rm -rf ./node_modules && rm -r package-lock.json && npm i",
-    "dev": "node --env-file=./config/.env.development -r ts-node/register src/index.ts",
+    "dev": "node --env-file=./src/config/.env.development -r ts-node/register src/index.ts",
     "dev:hot": "nodemon --exec \"npm run dev\" --watch ./src --ext .ts",
     "lint": "eslint . --fix",
     "start": "NODE_ENV=production node -r ./config.js ./dist",
@@ -32,7 +32,8 @@
     "jsonwebtoken": "^9.0.2",
     "module-alias": "^2.2.3",
     "mongoose": "^8.19.1",
-    "morgan": "^1.10.1"
+    "morgan": "^1.10.1",
+    "swagger-ui-express": "^5.0.1"
   },
   "devDependencies": {
     "@eslint/js": "^9.38.0",
@@ -48,6 +49,7 @@
     "@types/morgan": "^1.9.10",
     "@types/node": "^24.8.1",
     "@types/supertest": "^6.0.3",
+    "@types/swagger-ui-express": "^4.1.8",
     "cross-env": "^10.1.0",
     "eslint": "^9.38.0",
     "eslint-plugin-n": "^17.23.1",

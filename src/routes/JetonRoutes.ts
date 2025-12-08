@@ -1,7 +1,7 @@
 import JetonService from '@src/services/JetonServices';
 import { IReq, IRes } from './common/types';
 import { parseReq } from './common/util';
-import User from '@src/models/User';
+import User, { IUserLogin } from '@src/models/User';
 
 /******************************************************************************
                                 Constants
@@ -16,7 +16,7 @@ const Validators = {
  * @param {IRes} res
  */
 async function generateToken(req: IReq, res: IRes) {
-  const { userLogin } = Validators.generatetoken(req.body);
+  const userLogin = req.body.userLogin as IUserLogin;
   const token = await JetonService.generateToken(userLogin);
   return res.send({ token: token });
 }

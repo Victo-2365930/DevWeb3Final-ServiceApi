@@ -3,14 +3,21 @@ import { Request, Response, NextFunction, Router } from 'express';
 import Paths from '@src/common/constants/Paths';
 import PersonnageRoutes from './PersonnageRoutes';
 import HttpStatusCodes from '@src/common/constants/HttpStatusCodes';
-import { Personnage } from '@src/models/Personnage';
+import { IPersonnage, Personnage } from '@src/models/Personnage';
 import UserRoutes from './UserRoutes';
-import { User } from '@src/models/User';
+import { IUser, User } from '@src/models/User';
 import JetonRoutes from './JetonRoutes';
 
 /******************************************************************************
                                 Setup
 ******************************************************************************/
+interface IPersonnageBody {
+  personnage: IPersonnage;
+}
+
+interface IUserBody {
+  user: IUser;
+}
 
 const apiRouter = Router();
 
@@ -27,7 +34,7 @@ function validatePersonnage(req: Request, res: Response, next: NextFunction) {
     return;
   }
 
-  if (req.body.personnage === null) {
+  if ((req.body as IPersonnageBody).personnage === null) {
     res
       .status(HttpStatusCodes.BAD_REQUEST)
       .send({ error: 'Personnage requis' })
@@ -35,7 +42,9 @@ function validatePersonnage(req: Request, res: Response, next: NextFunction) {
     return;
   }
 
-  const nouveauPersonnage = new Personnage(req.body.personnage);
+  const nouveauPersonnage = new Personnage(
+    (req.body as IPersonnageBody).personnage,
+  );
   const error = nouveauPersonnage.validateSync();
   if (error !== null && error !== undefined) {
     res.status(HttpStatusCodes.BAD_REQUEST).send(error).end();
@@ -53,7 +62,7 @@ function validateUser(req: Request, res: Response, next: NextFunction) {
     return;
   }
 
-  if (req.body.user === null) {
+  if ((req.body as IUserBody).user === null) {
     res
       .status(HttpStatusCodes.BAD_REQUEST)
       .send({ error: 'Tous les paramètres d\'un User sont requis' })
@@ -61,7 +70,7 @@ function validateUser(req: Request, res: Response, next: NextFunction) {
     return;
   }
 
-  const nouveauUser = new User(req.body.user);
+  const nouveauUser = new User((req.body as IUserBody).user);
   const error = nouveauUser.validateSync();
   if (error !== null && error !== undefined) {
     res.status(HttpStatusCodes.BAD_REQUEST).send(error).end();

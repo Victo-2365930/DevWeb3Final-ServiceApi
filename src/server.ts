@@ -21,13 +21,15 @@ import cors from 'cors';
 import authenticateToken from './services/authenticateToken';
 import swaggerUi from 'swagger-ui-express';
 import fs from 'fs';
-const swaggerDocument = JSON.parse(
-  fs.readFileSync('./src/config/documentation.json', 'utf8'),
-);
 
 /******************************************************************************
                                 Setup
 ******************************************************************************/
+
+// eslint-disable-next-line  @typescript-eslint/no-unsafe-assignment
+const swaggerDocument = JSON.parse(
+  fs.readFileSync('./src/config/documentation.json', 'utf8'),
+);
 
 const swaggerOptions = {
   customCss: '.swagger-ui .topbar { display: none }',
@@ -56,6 +58,7 @@ if (ENV.NodeEnv === NodeEnvs.Production) {
   }
 }
 
+ 
 app.use(
   '/api/docs',
   swaggerUi.serve,

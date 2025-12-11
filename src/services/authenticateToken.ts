@@ -1,3 +1,4 @@
+/* eslint-disable */
 import jwt from 'jsonwebtoken';
 import { Response, Request, NextFunction } from 'express';
 import HttpStatusCodes from '@src/common/constants/HttpStatusCodes';
@@ -19,16 +20,11 @@ function authenticateToken(req: Request, res: Response, next: NextFunction) {
   const authHeader = req.headers.authorization;
   const token = authHeader?.split(' ')[1];
 
-  //console.log(token);
-
   if (token == null) return res.sendStatus(HttpStatusCodes.UNAUTHORIZED);
 
-  // eslint-disable-next-line @typescript-eslint/no-explicit-any
-  jwt.verify(token, ENV.Jwtsecret, (err: any) => {
-    //console.log(err);
-
+  jwt.verify(token, ENV.Jwtsecret, (err: any, decoded: any) => {
     if (err) return res.sendStatus(HttpStatusCodes.FORBIDDEN);
-
+    (req as any).userId = decoded;
     next();
   });
 }

@@ -1,3 +1,4 @@
+/* eslint-disable */
 import insertUrlParams from 'inserturlparams';
 import { customDeepCompare } from 'jet-validators/utils';
 
@@ -11,8 +12,6 @@ import { ValidationError } from '@src/common/util/route-errors';
 import Paths from './common/Paths';
 import { parseValidationErr, TRes } from './common/util';
 import { agent } from './support/setup';
-
-/* eslint-disable */
 
 /******************************************************************************
                                Constants

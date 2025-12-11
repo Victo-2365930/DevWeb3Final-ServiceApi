@@ -23,7 +23,9 @@ async function generateToken(utilisateur: IUserLogin): Promise<string> {
     utilisateursBD.length > 0 &&
     utilisateursBD[0].motDePasse === utilisateur.motDePasse
   ) {
-    return jwt.sign(utilisateur.email, ENV.Jwtsecret);
+    const user = utilisateursBD[0];
+    const userId = user._id;
+    return jwt.sign(userId!, ENV.Jwtsecret);
   } else {
     return '';
   }

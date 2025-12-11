@@ -58,10 +58,10 @@ if (ENV.NodeEnv === NodeEnvs.Production) {
   }
 }
 
- 
 app.use(
   '/api/docs',
   swaggerUi.serve,
+  // eslint-disable-next-line @typescript-eslint/no-unsafe-argument
   swaggerUi.setup(swaggerDocument, swaggerOptions),
 );
 

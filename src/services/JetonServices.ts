@@ -25,7 +25,8 @@ async function generateToken(utilisateur: IUserLogin): Promise<string> {
   ) {
     const user = utilisateursBD[0];
     const userId = user._id;
-    return jwt.sign(userId!, ENV.Jwtsecret);
+    const payload = { userId: userId! };
+    return jwt.sign(payload, ENV.Jwtsecret);
   } else {
     return '';
   }

@@ -2,7 +2,7 @@ import * as path from 'path';
 import dotenv from 'dotenv';
 
 dotenv.config({
-  path: path.join(process.cwd(), 'config/.env-production'),
+  path: path.join(process.cwd(), '.env'),
 });
 
 import morgan from 'morgan';
@@ -21,6 +21,7 @@ import cors from 'cors';
 import authenticateToken from './services/authenticateToken';
 import swaggerUi from 'swagger-ui-express';
 import fs from 'fs';
+import UserRoutes from './routes/UserRoutes';
 
 /******************************************************************************
                                 Setup
@@ -64,6 +65,9 @@ app.use(
   // eslint-disable-next-line @typescript-eslint/no-unsafe-argument
   swaggerUi.setup(swaggerDocument, swaggerOptions),
 );
+
+//Ouverture de la route de création d'utilisateur avant l'authentification
+app.post(Paths.Base + Paths.Users.Base + Paths.Users.Add, UserRoutes.add);
 
 //JTW Token
 app.use(authenticateToken);

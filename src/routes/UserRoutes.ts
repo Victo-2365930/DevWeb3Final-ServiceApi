@@ -15,7 +15,7 @@ async function getOne(req: IReq, res: IRes) {
 }
 
 /**
- * POur ajouter un user
+ * Pour ajouter un user
  * @param req
  * @param res
  */

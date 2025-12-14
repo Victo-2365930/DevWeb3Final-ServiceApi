@@ -65,7 +65,7 @@ function validateUser(req: Request, res: Response, next: NextFunction) {
   if ((req.body as IUserBody).user === null) {
     res
       .status(HttpStatusCodes.BAD_REQUEST)
-      .send({ error: 'Tous les paramètres d\'un User sont requis' })
+      .send({ error: "Tous les paramètres d'un User sont requis" })
       .end();
     return;
   }
@@ -104,7 +104,6 @@ leRouterPersonnage.delete(Paths.Personnage.Delete, PersonnageRoutes.delete);
 
 // User Routes
 leRouterUser.get(Paths.Users.GetById, UserRoutes.getOne);
-leRouterUser.post(Paths.Users.Add, validateUser, UserRoutes.add);
 leRouterUser.delete(Paths.Users.Delete, UserRoutes.delete);
 
 // Add leRouter

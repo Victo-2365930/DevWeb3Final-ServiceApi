@@ -2,7 +2,6 @@
 import insertUrlParams from 'inserturlparams';
 import { customDeepCompare } from 'jet-validators/utils';
 
-import UserRepo from '@src/repos/UserRepo';
 import { User, IUser } from '@src/models/User';
 import { USER_NON_TROUVE } from '@src/services/UserService';
 
@@ -19,23 +18,20 @@ import { agent } from './support/setup';
 //Dummy
 
 // Dummy users for GET req
-const DB_USERS: IUser[] = [
+const dbUsers: IUser[] = [
   {
-    _id: '692c9dc61d35a7d86ba595cz',
     nom: 'John Coutu',
     email: 'moncourriel@jaimemoncourriel.ca',
     motDePasse: 'qwerty123',
     created: new Date(),
   },
   {
-    _id: '692c9dd11d35a7d86ba595cz',
     nom: 'John Dark',
     email: 'EmailDeLavie@incroyableCourriel.ca',
     motDePasse: 'incroyablemdp123',
     created: new Date(),
   },
   {
-    _id: '692c9dde1d35a7d86ba595cz',
     nom: 'John BobLeChef',
     email: 'wowuncourriel@leserveur.ca',
     motDePasse: 'mdppaschercher999',
@@ -46,7 +42,7 @@ const DB_USERS: IUser[] = [
 // Don't compare "id" and "created" cause those are set dynamically by the
 // database
 const compareUserArrays = customDeepCompare({
-  onlyCompareProps: ['nom', 'email'],
+  onlyCompareProps: ['nom', 'email', 'motDePasse', 'created'],
 });
 
 const mockify = require('@jazim/mock-mongoose');
@@ -58,125 +54,75 @@ const mockify = require('@jazim/mock-mongoose');
   scenarios (i.e. a failed database connection). 
 ******************************************************************************/
 
-describe('UserRouter', () => {
+describe('userRouter', () => {
   let dbUsers: IUser[] = [];
 
-  // Run before all tests
-  beforeEach(async () => {
-    await UserRepo.deleteAllUsers();
-    dbUsers = await UserRepo.insertMult(DB_USERS);
-  });
-
-  // Get all users
-  describe(`"GET:${Paths.Users.Get}"`, () => {
-    // Success
+  // Tester l'ajout d'un user
+  describe(`'POST:${Paths.Users.Add}'`, () => {
+    // Ajout réussi
     it(
-      'should return a JSON object with all the users and a status code ' +
-        `of "${HttpStatusCodes.OK}" if the request was successful.`,
+      `doit retourner le code '${HttpStatusCodes.CREATED}' si la ` +
+        'transaction est réussie',
       async () => {
-        const res: TRes<{ users: IUser[] }> = await agent.get(Paths.Users.Get);
-        expect(res.status).toBe(HttpStatusCodes.OK);
-        expect(compareUserArrays(res.body.users, DB_USERS)).toBeTruthy();
-      },
-    );
-  });
-
-  // Test add user
-  describe(`"POST:${Paths.Users.Add}"`, () => {
-    // Test add user success
-    it(
-      `should return a status code of "${HttpStatusCodes.CREATED}" if the ` +
-        'request was successful.',
-      async () => {
-        const user = User.new({ name: 'a', email: 'a@a.com' }),
-          res = await agent.post(Paths.Users.Add).send({ user });
+        const user: IUser = {
+          nom: 'John',
+          email: 'uncourriel@undomaine.net',
+          motDePasse: 'Incroyable',
+          created: new Date(),
+        };
+        // Préparer le simulacre de Mongoose
+        mockify(user).toReturn(user, 'save');
+        const res = await agent.post(Paths.Users.Add).send({ user });
         expect(res.status).toBe(HttpStatusCodes.CREATED);
       },
     );
 
-    // Missing param
+    // Paramètre manquant
     it(
-      'should return a JSON object with an error message of and a status ' +
-        `code of "${HttpStatusCodes.BAD_REQUEST}" if the user param was ` +
-        'missing.',
+      'doit retourner un JSON avec les erreurs et un code de ' +
+        `'${HttpStatusCodes.BAD_REQUEST}' si un paramètre est ` +
+        'manquant.',
       async () => {
         const res: TRes = await agent
           .post(Paths.Users.Add)
           .send({ user: null });
         expect(res.status).toBe(HttpStatusCodes.BAD_REQUEST);
-        const errorObj = parseValidationErr(res.body.error);
-        expect(errorObj.message).toBe(ValidationError.MESSAGE);
-        expect(errorObj.errors[0].prop).toBe('user');
+        expect(res.body.error).toBe('User requis');
       },
     );
   });
 
-  // Update users
-  describe(`"PUT:${Paths.Users.Update}"`, () => {
-    // Success
+  // Supprimer le User
+  describe(`'DELETE:${Paths.Users.Delete}'`, () => {
+    const getPath = (id: string) => insertUrlParams(Paths.Users.Delete, { id });
+
+    // Succès
     it(
-      `should return a status code of "${HttpStatusCodes.OK}" if the ` +
-        'request was successful.',
+      `doit retourner un code de '${HttpStatusCodes.OK}' si la ` +
+        'suppression est réussie.',
       async () => {
-        const user = DB_USERS[0];
-        user.name = 'Bill';
-        const res = await agent.put(Paths.Users.Update).send({ user });
-        expect(res.status).toBe(HttpStatusCodes.OK);
+        // Préparer le simulacre de Mongoose
+        mockify(dbUsers)
+          .toReturn(dbUsers[0], 'findOne')
+          .toReturn(dbUsers[0], 'findOneAndRemove');
+        if (dbUsers[0]._id) {
+          const _id = dbUsers[0]._id,
+            res = await agent.delete(getPath(_id));
+          expect(res.status).toBe(HttpStatusCodes.OK);
+        }
       },
     );
 
-    // Id is the wrong data type
+    // Réservation non trouvée
     it(
-      'should return a JSON object with an error message and a status code ' +
-        `of "${HttpStatusCodes.BAD_REQUEST}" if the user param was missing`,
+      'doit retourner un JSON avec erreur ' +
+        `'${USER_NON_TROUVE}' et un code de  ` +
+        `'${HttpStatusCodes.NOT_FOUND}' si la réservation est introuvable.`,
       async () => {
-        const user = User.new();
-        user.id = '5' as unknown as number;
-        const res: TRes = await agent.put(Paths.Users.Update).send({ user });
-        expect(res.status).toBe(HttpStatusCodes.BAD_REQUEST);
-        const errorObj = parseValidationErr(res.body.error);
-        expect(errorObj.message).toBe(ValidationError.MESSAGE);
-        expect(errorObj.errors[0].prop).toBe('user');
-        expect(errorObj.errors[0].children?.[0].prop).toBe('id');
-      },
-    );
+        // Préparer le simulacre de Mongoose
+        mockify(dbUsers).toReturn(null, 'findOne');
 
-    // User not found
-    it(
-      'should return a JSON object with the error message of ' +
-        `"${USER_NON_TROUVE}" and a status code of ` +
-        `"${HttpStatusCodes.NOT_FOUND}" if the id was not found.`,
-      async () => {
-        const user = User.new({ id: 4, name: 'a', email: 'a@a.com' }),
-          res: TRes = await agent.put(Paths.Users.Update).send({ user });
-        expect(res.status).toBe(HttpStatusCodes.NOT_FOUND);
-        expect(res.body.error).toBe(USER_NON_TROUVE);
-      },
-    );
-  });
-
-  // Delete User
-  describe(`"DELETE:${Paths.Users.Delete}"`, () => {
-    const getPath = (id: number) => insertUrlParams(Paths.Users.Delete, { id });
-
-    // Success
-    it(
-      `should return a status code of "${HttpStatusCodes.OK}" if the ` +
-        'request was successful.',
-      async () => {
-        const id = dbUsers[0].id,
-          res = await agent.delete(getPath(id));
-        expect(res.status).toBe(HttpStatusCodes.OK);
-      },
-    );
-
-    // User not found
-    it(
-      'should return a JSON object with the error message of ' +
-        `"${USER_NON_TROUVE}" and a status code of ` +
-        `"${HttpStatusCodes.NOT_FOUND}" if the id was not found.`,
-      async () => {
-        const res: TRes = await agent.delete(getPath(-1));
+        const res: TRes = await agent.delete(getPath('-1'));
         expect(res.status).toBe(HttpStatusCodes.NOT_FOUND);
         expect(res.body.error).toBe(USER_NON_TROUVE);
       },

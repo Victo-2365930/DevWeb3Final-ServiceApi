@@ -1,0 +1,37 @@
+[
+    {
+        "_id": { "$oid": "657c4c1d7e2e8e9c4d9a1b01" },
+        "nom": "Aeliana Sombra",
+        "email": "aeliana.sombra@anima.com",
+        "motDePasse": "Ombre8Caractere",
+        "created": { "$date": "2025-10-01T10:00:00.000Z" }
+    },
+    {
+        "_id": { "$oid": "657c4c1d7e2e8e9c4d9a1b02" },
+        "nom": "Kaelen Draconis",
+        "email": "kaelen.draconis@anima.com",
+        "motDePasse": "DragonNoir8",
+        "created": { "$date": "2025-10-15T12:30:00.000Z" }
+    },
+    {
+        "_id": { "$oid": "657c4c1d7e2e8e9c4d9a1b03" },
+        "nom": "Lyra Solis",
+        "email": "lyra.solis@anima.com",
+        "motDePasse": "LumiereLyra8",
+        "created": { "$date": "2025-11-01T09:00:00.000Z" }
+    },
+    {
+        "_id": { "$oid": "657c4c1d7e2e8e9c4d9a1b04" },
+        "nom": "Marcus Aquila",
+        "email": "marcus.aquila@anima.com",
+        "motDePasse": "AiglePuissant8",
+        "created": { "$date": "2025-11-10T14:45:00.000Z" }
+    },
+    {
+        "_id": { "$oid": "657c4c1d7e2e8e9c4d9a1b05" },
+        "nom": "Zane Vesper",
+        "email": "zane.vesper@anima.com",
+        "motDePasse": "NuitEtoile8",
+        "created": { "$date": "2025-12-05T16:20:00.000Z" }
+    }
+]

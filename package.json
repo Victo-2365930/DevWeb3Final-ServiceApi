@@ -8,7 +8,7 @@
     "dev:hot": "nodemon --exec \"npm run dev\" --watch ./src --ext .ts",
     "lint": "eslint . --fix",
     "start": "NODE_ENV=production node -r ./config.js ./dist",
-    "test": "NODE_ENV=test vitest",
+    "test": "node --env-file=.env vitest",
     "type-check": "tsc --noEmit"
   },
   "engines": {

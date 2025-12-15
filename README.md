@@ -1,6 +1,6 @@
-## Bienvenu à l'API de Personage d'Anima:Beyond Fantasy
+# Bienvenu à l'API de Personage d'Anima:Beyond Fantasy
 
-# À partir de cet Api, chaque joueur peut gérer ses personnages
+## À partir de cet Api, chaque joueur peut gérer ses personnages
 
 ## Pour initialiser le service API:
 
@@ -12,11 +12,13 @@
 5. Pour démarrer le service:
 
    Développement:
-   npm run build
+   npm run dev
 
    Production:
-   npm run build
+   npm run build et
    npm start
+  
+Un jeu de données tests sont disponible dans le dossier /dev
 
 ## Ce que contient le service API
 

@@ -1,14 +1,10 @@
 import JetonService from '@src/services/JetonServices';
 import { IReq, IRes } from './common/types';
-import { parseReq } from './common/util';
 import User, { IUserLogin } from '@src/models/User';
 
 /******************************************************************************
                                 Constants
 ******************************************************************************/
-const Validators = {
-  generatetoken: parseReq({ userLogin: User.testlogin }),
-} as const;
 
 /**
  * Pour générer un jeton.

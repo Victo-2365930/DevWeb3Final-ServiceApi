@@ -65,7 +65,7 @@ function validateUser(req: Request, res: Response, next: NextFunction) {
   if ((req.body as IUserBody).user === null) {
     res
       .status(HttpStatusCodes.BAD_REQUEST)
-      .send({ error: "Tous les paramètres d'un User sont requis" })
+      .send({ error: 'Tous les paramètres d\'un User sont requis' })
       .end();
     return;
   }
